@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
  * Represents a mecanum drive style drivetrain.
  */
 @SuppressWarnings("PMD.TooManyFields")
-public class Drivetrain {
+public class DriveTrain {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
@@ -61,7 +61,7 @@ public class Drivetrain {
   /**
    * Constructs a MecanumDrive and resets the gyro.
    */
-  public Drivetrain() {
+  public DriveTrain() {
     m_gyro.reset();
   }
 
