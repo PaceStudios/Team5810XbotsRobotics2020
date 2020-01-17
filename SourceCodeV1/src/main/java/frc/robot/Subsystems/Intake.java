@@ -1,13 +1,32 @@
 package frc.robot.Subsystems;
-public class Intake{
+import edu.wpi.first.wpilibj.Spark;
+import frc.robot.Subsystems.Constants;
+public class Intake  
+
+{
+    // Motors can be changed according to what names they are.
+    private boolean intakeEngaged = false;
+    private Spark intake;
     public Intake(){
-        // Enter intialiization code here.
+        
+        intake = new Spark(Constants.intakeMotor1);
     }
-    public void intializeIntakeMotors(int speed_1, int speed_2, int speed_3, int speed_4){}
     
-    public void intakeBalls(){}
-
-    public void outtakeBalls(){}
     
+    public void intakeBalls(double speed){
+        intakeEngaged = true;
+        intake.set(-speed);
+        intakeEngaged = false;
+    }
+        
 
+    public void outtakeBalls(double speed){
+        intakeEngaged = true;
+        intake.set(speed);
+        intakeEngaged = false;
+    }
+    public boolean getIntakeStatus(){
+        return intakeEngaged;
+    }
+    
 }

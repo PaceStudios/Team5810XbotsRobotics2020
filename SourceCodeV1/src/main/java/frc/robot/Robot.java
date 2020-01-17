@@ -19,6 +19,10 @@ public class Robot extends TimedRobot {
   private final XboxController m_controller = new XboxController(0);
   private final DriveTrain m_mecanum = new DriveTrain();
   private final Timer timer01 = new Timer();
+  private final Intake intake1 = new Intake();
+ 
+  
+  
   public Robot(){
 
   }
@@ -49,6 +53,13 @@ public class Robot extends TimedRobot {
     timer01.reset();
     timer01.start();
     driveWithJoystick(true);
+    if(m_controller.getRawButton(1)){
+      intake1.intakeBalls(0.6);
+    }
+    if(m_controller.getRawButton(2)){
+      intake1.outtakeBalls(0.6);
+    }
+    
   }
   @Override
   public void disabledInit(){
