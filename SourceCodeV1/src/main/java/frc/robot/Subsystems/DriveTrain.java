@@ -27,10 +27,10 @@ public class DriveTrain {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-  private final SpeedController m_frontRightMotor = new PWMVictorSPX(2);
-  private final SpeedController m_backLeftMotor = new PWMVictorSPX(3);
-  private final SpeedController m_backRightMotor = new PWMVictorSPX(4);
-  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(1);
+  private final SpeedController m_frontRightMotor = new PWMVictorSPX(2); // Motor 1
+  private final SpeedController m_backLeftMotor = new PWMVictorSPX(3); // Motor 2
+  private final SpeedController m_backRightMotor = new PWMVictorSPX(4); // Motor 3
+  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(1); // Motor 4
   
   
   /// DO NOT TOUCH THIS YET, IN PROCESS OF LEARNING
@@ -139,4 +139,47 @@ public class DriveTrain {
   public void updateOdometry() {
     m_odometry.update(getAngle(), getCurrentState());
   }
+
+  // Turning Left is -90 (Oppostive of the Unit Cirle Representation)
+  // Turning Right is +90
+  public void turnLeft90Degrees(){
+    double initialAngle = m_gyro.getAngle(); 
+    double sampleAngle = m_gyro.getAngle();
+    while(initialAngle-90 >= sampleAngle){
+      m_frontLeftMotor.set(-0.8);
+      m_frontRightMotor.set(0.8);
+      m_backLeftMotor.set(-0.8);
+      m_backRightMotor.set(0.8);
+      sampleAngle = m_gyro.getAngle();
+    }
+
+    }
+  public void turnRight90Degrees(){
+    double initialAngle = m_gyro.getAngle(); 
+    double sampleAngle = m_gyro.getAngle();
+    while(initialAngle-90 >= sampleAngle){
+      m_frontLeftMotor.set(0.8);
+      m_frontRightMotor.set(-0.8);
+      m_backLeftMotor.set(0.8);
+      m_backRightMotor.set(-0.8);
+      sampleAngle = m_gyro.getAngle();
+    }
+    
+  }
+  public void turn(double motorvalue1, double motorvalue2){
+    m_frontLeftMotor.set(motorvalue1);
+    m_backLeftMotor.set(motorvalue1);
+    m_frontRightMotor.set(motorvalue2);
+    m_backRightMotor.set(motorvalue2);
+  }
+
+  
+  /*
+  Through the use of Encoders to find and move a specific distance
+  */
+
+  public void driveForwardAutonomously(double distance){
+    
+  }
+
 }

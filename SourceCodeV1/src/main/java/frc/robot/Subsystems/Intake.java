@@ -9,7 +9,7 @@ public class Intake
     private Spark intake;
     public Intake(){
         
-        intake = new Spark(Constants.intakeMotor1);
+        intake = new Spark(Constants.INTAKE1);
     }
     
     

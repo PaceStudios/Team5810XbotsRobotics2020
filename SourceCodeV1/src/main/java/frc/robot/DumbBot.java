@@ -16,7 +16,7 @@ public class DumbBot extends TimedRobot
     private final String mode;
     private Victor l_motor = new Victor(Constants.dumbBotArcadeBaseMotorL_PWM);
     private Victor r_motor = new Victor(Constants.dumbBotArcadeBaseMotorR_PWM);
-    private XboxController joy_1 = new XboxController(Constants.xboxPC_Port);
+    private XboxController joy_1 = new XboxController(Constants.XBOXCONTROL);
 
     public DumbBot(){
         mode = "Dumb Bot LMAO";
