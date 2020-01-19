@@ -9,7 +9,7 @@ package frc.robot;
 
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+//import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -17,23 +17,34 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Subsystems.*;
 import frc.robot.Subsystems.Constants;
-
+/**
+ * @author John C. Pace
+ * @since 01/06/2020
+ * @version 01/19/2020
+ * @apiNote This class is the central hub to the program, resposible 
+ * for hosting all the different subsystems, I/O systems together in addition to
+ * the different modes of the program 
+ */
 
 public class Robot extends TimedRobot {
   private XboxController m_controller;
   private Joystick m_joystick;
-  private DriveTrain m_mecanum = new DriveTrain();
   private Timer timer01 = new Timer();
+  private boolean isAimOn;
+  /**
+   * Creates and instantiates all the Subsystems
+   */
+  private DriveTrain m_mecanum = new DriveTrain();
   private Intake intake1 = new Intake();
   private Limelight limelight = new Limelight();
-  private boolean isAimOn;
-
+  private Shooter shoot = new Shooter();
+  private Climber climb = new Climber();
   @Override
   public void robotInit(){
     super.robotInit();
     // Declares and Creates Controllers and Joystick
-    m_controller = new XboxController(Constants.XBOXCONTROL);
-    m_joystick = new Joystick(Constants.JOYSTICKCONTROL);
+    m_controller = new XboxController(Constants.XBOXCONTROL_PORT);
+    m_joystick = new Joystick(Constants.JOYSTICK_PORT);
     // Creates Subsystems and Activates Them in Teleop Periodic 
     m_mecanum = new DriveTrain();
     timer01 = new Timer();
@@ -45,7 +56,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     
     super.autonomousInit();
-    driveWithJoystick(false);
+    driveWithXboxControl(false);
     timer01.reset();
   }
   
@@ -54,7 +65,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     timer01.reset();
     timer01.start();
-    driveWithJoystick(false);
+    driveWithXboxControl(false);
     m_mecanum.updateOdometry();
     
   }
@@ -66,16 +77,21 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopPeriodic() {
-    timer01.reset();
-    timer01.start();
-    driveWithJoystick(true);
-    if (m_joystick.getRawButton(1)){
+    timer01.reset();              // Resets the timer for the round on the RoboRio
+    timer01.start();              // Starts the timer on the RoboRio
+    driveWithXboxControl(true);      // Sets the method for driving in TeleOp, was modified to work with an Xbox Controller 
+    if (m_joystick.getRawButton(1)){  // Method working with the Intake and Outtake for the Robot (Will be Eventually modified)
+      intake1.setEngaged(true);
       intake1.intakeBalls(0.8);
     }
-    if(m_joystick.getRawButton(2)){
+    else
+    {
+      intake1.setEngaged(false);
+    }
+    if (m_joystick.getRawButton(2)){
       intake1.outtakeBalls(0.8);
     }
-    if(m_controller.getRawButton(1)){ // Red Button 'A'
+    if(m_controller.getRawButton(1)){ // Red Button 'A'. Toggles itself on or off based on button press. 
       isAimOn = !isAimOn;
       while(isAimOn){
         aimWithVision(limelight.getTable());
@@ -85,6 +101,10 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit(){
     super.disabledInit();
+    intake1.killAllMotors();
+    climb.killAllMotors();
+    m_mecanum.killAllMotors();
+    shoot.killAllMotors();
   }
   @Override
   public void disabledPeriodic(){
@@ -99,7 +119,7 @@ public class Robot extends TimedRobot {
     super.testPeriodic();
   }
 
-  private void driveWithJoystick(boolean fieldRelative) {
+  private void driveWithXboxControl(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
     final var xSpeed = -m_controller.getY(GenericHID.Hand.kLeft) * DriveTrain.kMaxSpeed;
@@ -117,6 +137,9 @@ public class Robot extends TimedRobot {
 
     m_mecanum.drive(xSpeed, ySpeed, rot, fieldRelative);
   }
+
+
+
   private void aimWithVision(NetworkTable a){
     /*
     Used to configure the Joystick to respond to moving towards the specified tx target
@@ -128,7 +151,7 @@ public class Robot extends TimedRobot {
     float left_command = 0;
     float right_command = 0;
     float steering_command = 0;
-    float heading_error = -tx;
+    float heading_error = -tx; // Each time the robot should lurch less and less as the method calls it self over again. 
     if(tx > 1.0){
       steering_command = (Kp*heading_error) - min_command;
     }
@@ -137,6 +160,6 @@ public class Robot extends TimedRobot {
     }
     left_command+= steering_command;
     right_command-= steering_command;
-
+    m_mecanum.turn(left_command, right_command);
   }
 }

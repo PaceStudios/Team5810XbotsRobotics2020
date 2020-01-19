@@ -7,7 +7,7 @@
 
 package frc.robot.Subsystems;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogGyro; // Requires connection to an Analog input 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -22,15 +22,21 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
 /**
  * Represents a mecanum drive style drivetrain.
  */
+/**
+ * @author John C. Pace, Marco Colón, Wpilib Library
+ * @since 01/13/2020
+ * @version 01/19/2020
+ * @apiNote This class represent a mecanum style drive train through the use of analog gyroscope, RoboRio, 
+ */
 @SuppressWarnings("PMD.TooManyFields")
 public class DriveTrain {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-  private final SpeedController m_frontRightMotor = new PWMVictorSPX(2); // Motor 1
-  private final SpeedController m_backLeftMotor = new PWMVictorSPX(3); // Motor 2
-  private final SpeedController m_backRightMotor = new PWMVictorSPX(4); // Motor 3
-  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(1); // Motor 4
+  private final SpeedController m_frontRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR1_PWM); // Motor 1
+  private final SpeedController m_backLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR2_PWM); // Motor 2
+  private final SpeedController m_backRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR3_PWM); // Motor 3
+  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR4_PWM); // Motor 4
   
   
   /// DO NOT TOUCH THIS YET, IN PROCESS OF LEARNING
@@ -146,10 +152,10 @@ public class DriveTrain {
     double initialAngle = m_gyro.getAngle(); 
     double sampleAngle = m_gyro.getAngle();
     while(initialAngle-90 >= sampleAngle){
-      m_frontLeftMotor.set(-0.8);
-      m_frontRightMotor.set(0.8);
-      m_backLeftMotor.set(-0.8);
-      m_backRightMotor.set(0.8);
+      m_frontLeftMotor.set(-Constants.HALF_SPEED);
+      m_frontRightMotor.set(Constants.HALF_SPEED);
+      m_backLeftMotor.set(-Constants.HALF_SPEED);
+      m_backRightMotor.set(Constants.HALF_SPEED);
       sampleAngle = m_gyro.getAngle();
     }
 
@@ -158,10 +164,10 @@ public class DriveTrain {
     double initialAngle = m_gyro.getAngle(); 
     double sampleAngle = m_gyro.getAngle();
     while(initialAngle-90 >= sampleAngle){
-      m_frontLeftMotor.set(0.8);
-      m_frontRightMotor.set(-0.8);
-      m_backLeftMotor.set(0.8);
-      m_backRightMotor.set(-0.8);
+      m_frontLeftMotor.set(Constants.HALF_SPEED);
+      m_frontRightMotor.set(-Constants.HALF_SPEED);
+      m_backLeftMotor.set(Constants.HALF_SPEED);
+      m_backRightMotor.set(-Constants.HALF_SPEED);
       sampleAngle = m_gyro.getAngle();
     }
     
@@ -180,6 +186,16 @@ public class DriveTrain {
 
   public void driveForwardAutonomously(double distance){
     
+  }
+  /**
+   * Method only called during disAbled Init , while the motors will already be killed, it is safer to also 
+   * reset the their values to a neuatral 0 
+   */
+  public void killAllMotors(){
+    m_frontLeftMotor.set(Constants.DEAD_SPEED);
+    m_backLeftMotor.set(Constants.DEAD_SPEED);
+    m_frontRightMotor.set(Constants.DEAD_SPEED);
+    m_backLeftMotor.set(Constants.DEAD_SPEED);
   }
 
 }

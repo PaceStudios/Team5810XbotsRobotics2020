@@ -9,7 +9,12 @@ import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
-
+/**
+ * @author Eugene Kong
+ * @since 01/06/2020
+ * @version 01/16/2020
+ * @apiNote This class is dedicated to sensing and detecting color based off an Analog device. 
+ */
 public class ColorMatcher {
   /**
    * Change the I2C port below to match the connection of your color sensor
