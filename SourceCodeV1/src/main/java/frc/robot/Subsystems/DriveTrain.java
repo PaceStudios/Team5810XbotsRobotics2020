@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
 /**
  * @author John C. Pace, Marco Colón, Wpilib Library
  * @since 01/13/2020
- * @version 01/19/2020
+ * @version 01/20/2020
  * @apiNote This class represent a mecanum style drive train through the use of analog gyroscope, RoboRio, 
  */
 @SuppressWarnings("PMD.TooManyFields")

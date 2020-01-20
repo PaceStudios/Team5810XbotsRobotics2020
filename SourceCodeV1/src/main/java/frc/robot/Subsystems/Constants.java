@@ -2,7 +2,7 @@ package frc.robot.Subsystems;
 /**
  * @author John C. Pace
  * @since 01/06/2020
- * @version 01/19/2020
+ * @version 01/20/2020
  * @apiNote This class is dedicated to creating permanent values to any number value that may be used in the program, for a higher efficiency on the compiler. 
  */
 public final class Constants{
