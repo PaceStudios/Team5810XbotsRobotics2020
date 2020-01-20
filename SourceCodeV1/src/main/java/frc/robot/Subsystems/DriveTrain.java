@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
 @SuppressWarnings("PMD.TooManyFields")
 public class DriveTrain {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
+  public static final double kHalfSpeed = 1.5; // 1.5 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
   private final SpeedController m_frontRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR1_PWM); // Motor 1
@@ -184,8 +185,30 @@ public class DriveTrain {
   Through the use of Encoders to find and move a specific distance
   */
 
-  public void driveForwardAutonomously(double distance){
-    
+  public void moveExactDistance(double distance, String mode){
+    m_backLeftEncoder.reset();
+    m_backRightEncoder.reset();
+    m_frontLeftEncoder.reset();
+    m_frontRightEncoder.reset();
+    double currentDistance = m_backLeftEncoder.getDistance() + m_backRightEncoder.getDistance() + m_frontLeftEncoder.getDistance() + m_frontRightEncoder.getDistance();
+    var mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(m_frontLeftEncoder.getRate(), m_frontRightEncoder.getRate(), m_backLeftEncoder.getRate(), m_backRightEncoder.getRate()); ; 
+    if(mode == Constants.MODE_UP){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(m_frontLeftEncoder.getRate(), m_frontRightEncoder.getRate(), m_backLeftEncoder.getRate(), m_backRightEncoder.getRate());
+    }
+    if(mode == Constants.MODE_DOWN){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(-m_frontLeftEncoder.getRate(), -m_frontRightEncoder.getRate(), -m_backLeftEncoder.getRate(), -m_backRightEncoder.getRate());
+    }
+    if(mode == Constants.MODE_LEFT){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(-m_frontLeftEncoder.getRate(), m_frontRightEncoder.getRate(), m_backLeftEncoder.getRate(), -m_backRightEncoder.getRate());
+    }
+    if(mode == Constants.MODE_RIGHT){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(m_frontLeftEncoder.getRate(), -m_frontRightEncoder.getRate(), -m_backLeftEncoder.getRate(), m_backRightEncoder.getRate());
+    }
+    while(currentDistance != distance*4){     // Talk to Marco about this logic and specific distances 
+      mecanumDriveWheelSpeeds2.normalize(kHalfSpeed);
+      setSpeeds(mecanumDriveWheelSpeeds2);
+      currentDistance =  m_backLeftEncoder.getDistance() + m_backRightEncoder.getDistance() + m_frontLeftEncoder.getDistance() + m_frontRightEncoder.getDistance();
+    } // Talk to Marco about this 
   }
   /**
    * Method only called during disAbled Init , while the motors will already be killed, it is safer to also 

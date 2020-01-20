@@ -24,5 +24,12 @@ public final class Constants{
     public static final double FULL_SPEED = 1.0;
     public static final double SEMI_SPEED = 0.8;
     public static final double DEAD_SPEED = 0.0;
-    
+
+    /**
+     * String values
+     */
+    public static final String MODE_UP = "UP";
+    public static final String MODE_DOWN = "DOWN";
+    public static final String MODE_RIGHT = "RIGHT";
+    public static final String MODE_LEFT = "LEFT";
 }

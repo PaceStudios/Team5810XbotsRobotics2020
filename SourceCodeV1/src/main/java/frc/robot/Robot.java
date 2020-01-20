@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
   private Limelight limelight = new Limelight();
   private Shooter shoot = new Shooter();
   private Climber climb = new Climber();
+  private Alignment align = new Alignment();
   @Override
   public void robotInit(){
     super.robotInit();
@@ -96,6 +97,33 @@ public class Robot extends TimedRobot {
       while(isAimOn){
         aimWithVision(limelight.getTable());
       }
+    }
+    /*
+    Responsible for dealing with the TeleOp alignment
+    */
+    if(m_joystick.getRawButton(7)){
+      align.moveUp(2);
+    }
+    if(m_joystick.getRawButton(10)){
+      align.moveDown(2);
+    }
+    if(m_joystick.getRawButton(8)){
+      align.moveLeft(2);
+    }
+    if(m_joystick.getRawButton(11)){
+      align.moveRight(2);
+    }
+    if(m_joystick.getRawButton(9)){
+      align.moveUp(0.5);
+    }
+    if(m_joystick.getRawButton(12)){
+      align.moveDown(0.5);
+    }
+    if(m_joystick.getRawButton(5)){
+      align.moveLeft(0.5);
+    }
+    if(m_joystick.getRawButton(6)){
+      align.moveRight(0.5);
     }
   }
   @Override
@@ -161,5 +189,12 @@ public class Robot extends TimedRobot {
     left_command+= steering_command;
     right_command-= steering_command;
     m_mecanum.turn(left_command, right_command);
+    if(tx == 1){
+      align.setAlignment(true);
+    }
+    else
+    {
+      align.setAlignment(false);
+    }
   }
 }
