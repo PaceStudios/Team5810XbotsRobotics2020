@@ -27,6 +27,9 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
  * @since 01/13/2020
  * @version 01/20/2020
  * @apiNote This class represent a mecanum style drive train through the use of analog gyroscope, RoboRio, 
+ * Several Notes to Consider if Errors persists:
+ * We are assuming that setPulseDistance is already calculated, for the getRate and get Distance (01/20/20)
+ * 
  */
 @SuppressWarnings("PMD.TooManyFields")
 public class DriveTrain {
@@ -184,6 +187,13 @@ public class DriveTrain {
   /*
   Through the use of Encoders to find and move a specific distance
   */
+
+  /**
+   * Mentor Tom suggests completely flipping the forward and front and back of the robot, Potentially move it either or (ASK for More
+   * Information))
+   * @param distance
+   * @param mode
+   */
 
   public void moveExactDistance(double distance, String mode){
     m_backLeftEncoder.reset();
