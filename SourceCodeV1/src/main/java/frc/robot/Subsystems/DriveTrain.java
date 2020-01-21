@@ -7,7 +7,7 @@
 
 package frc.robot.Subsystems;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogGyro; // Requires connection to an Analog input 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -22,15 +22,25 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
 /**
  * Represents a mecanum drive style drivetrain.
  */
+/**
+ * @author John C. Pace, Marco Colón, Wpilib Library
+ * @since 01/13/2020
+ * @version 01/20/2020
+ * @apiNote This class represent a mecanum style drive train through the use of analog gyroscope, RoboRio, 
+ * Several Notes to Consider if Errors persists:
+ * We are assuming that setPulseDistance is already calculated, for the getRate and get Distance (01/20/20)
+ * 
+ */
 @SuppressWarnings("PMD.TooManyFields")
 public class DriveTrain {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
+  public static final double kHalfSpeed = 1.5; // 1.5 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-  private final SpeedController m_frontRightMotor = new PWMVictorSPX(2);
-  private final SpeedController m_backLeftMotor = new PWMVictorSPX(3);
-  private final SpeedController m_backRightMotor = new PWMVictorSPX(4);
-  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(1);
+  private final SpeedController m_frontRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR1_PWM); // Motor 1
+  private final SpeedController m_backLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR2_PWM); // Motor 2
+  private final SpeedController m_backRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR3_PWM); // Motor 3
+  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR4_PWM); // Motor 4
   
   
   /// DO NOT TOUCH THIS YET, IN PROCESS OF LEARNING
@@ -139,4 +149,86 @@ public class DriveTrain {
   public void updateOdometry() {
     m_odometry.update(getAngle(), getCurrentState());
   }
+
+  // Turning Left is -90 (Oppostive of the Unit Cirle Representation)
+  // Turning Right is +90
+  public void turnLeft90Degrees(){
+    double initialAngle = m_gyro.getAngle(); 
+    double sampleAngle = m_gyro.getAngle();
+    while(initialAngle-90 >= sampleAngle){
+      m_frontLeftMotor.set(-Constants.HALF_SPEED);
+      m_frontRightMotor.set(Constants.HALF_SPEED);
+      m_backLeftMotor.set(-Constants.HALF_SPEED);
+      m_backRightMotor.set(Constants.HALF_SPEED);
+      sampleAngle = m_gyro.getAngle();
+    }
+
+    }
+  public void turnRight90Degrees(){
+    double initialAngle = m_gyro.getAngle(); 
+    double sampleAngle = m_gyro.getAngle();
+    while(initialAngle-90 >= sampleAngle){
+      m_frontLeftMotor.set(Constants.HALF_SPEED);
+      m_frontRightMotor.set(-Constants.HALF_SPEED);
+      m_backLeftMotor.set(Constants.HALF_SPEED);
+      m_backRightMotor.set(-Constants.HALF_SPEED);
+      sampleAngle = m_gyro.getAngle();
+    }
+    
+  }
+  public void turn(double motorvalue1, double motorvalue2){
+    m_frontLeftMotor.set(motorvalue1);
+    m_backLeftMotor.set(motorvalue1);
+    m_frontRightMotor.set(motorvalue2);
+    m_backRightMotor.set(motorvalue2);
+  }
+
+  
+  /*
+  Through the use of Encoders to find and move a specific distance
+  */
+
+  /**
+   * Mentor Tom suggests completely flipping the forward and front and back of the robot, Potentially move it either or (ASK for More
+   * Information))
+   * @param distance
+   * @param mode
+   */
+
+  public void moveExactDistance(double distance, String mode){
+    m_backLeftEncoder.reset();
+    m_backRightEncoder.reset();
+    m_frontLeftEncoder.reset();
+    m_frontRightEncoder.reset();
+    double currentDistance = m_backLeftEncoder.getDistance() + m_backRightEncoder.getDistance() + m_frontLeftEncoder.getDistance() + m_frontRightEncoder.getDistance();
+    var mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(m_frontLeftEncoder.getRate(), m_frontRightEncoder.getRate(), m_backLeftEncoder.getRate(), m_backRightEncoder.getRate()); ; 
+    if(mode == Constants.MODE_UP){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(m_frontLeftEncoder.getRate(), m_frontRightEncoder.getRate(), m_backLeftEncoder.getRate(), m_backRightEncoder.getRate());
+    }
+    if(mode == Constants.MODE_DOWN){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(-m_frontLeftEncoder.getRate(), -m_frontRightEncoder.getRate(), -m_backLeftEncoder.getRate(), -m_backRightEncoder.getRate());
+    }
+    if(mode == Constants.MODE_LEFT){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(-m_frontLeftEncoder.getRate(), m_frontRightEncoder.getRate(), m_backLeftEncoder.getRate(), -m_backRightEncoder.getRate());
+    }
+    if(mode == Constants.MODE_RIGHT){
+      mecanumDriveWheelSpeeds2 = new MecanumDriveWheelSpeeds(m_frontLeftEncoder.getRate(), -m_frontRightEncoder.getRate(), -m_backLeftEncoder.getRate(), m_backRightEncoder.getRate());
+    }
+    while(currentDistance != distance*4){     // Talk to Marco about this logic and specific distances 
+      mecanumDriveWheelSpeeds2.normalize(kHalfSpeed);
+      setSpeeds(mecanumDriveWheelSpeeds2);
+      currentDistance =  m_backLeftEncoder.getDistance() + m_backRightEncoder.getDistance() + m_frontLeftEncoder.getDistance() + m_frontRightEncoder.getDistance();
+    } // Talk to Marco about this 
+  }
+  /**
+   * Method only called during disAbled Init , while the motors will already be killed, it is safer to also 
+   * reset the their values to a neuatral 0 
+   */
+  public void killAllMotors(){
+    m_frontLeftMotor.set(Constants.DEAD_SPEED);
+    m_backLeftMotor.set(Constants.DEAD_SPEED);
+    m_frontRightMotor.set(Constants.DEAD_SPEED);
+    m_backLeftMotor.set(Constants.DEAD_SPEED);
+  }
+
 }

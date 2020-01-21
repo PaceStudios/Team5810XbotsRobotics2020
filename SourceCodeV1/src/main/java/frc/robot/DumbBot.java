@@ -16,7 +16,7 @@ public class DumbBot extends TimedRobot
     private final String mode;
     private Victor l_motor = new Victor(Constants.dumbBotArcadeBaseMotorL_PWM);
     private Victor r_motor = new Victor(Constants.dumbBotArcadeBaseMotorR_PWM);
-    private XboxController joy_1 = new XboxController(Constants.xboxPC_Port);
+    private XboxController x_1 = new XboxController(Constants.XBOXCONTROL_PORT);
 
     public DumbBot(){
         mode = "Dumb Bot LMAO";
@@ -57,8 +57,8 @@ public class DumbBot extends TimedRobot
     }
     @Override
     public void teleopPeriodic(){
-        double speed = (-joy_1.getRawAxis(1) * 0.6);
-        double turn = (joy_1.getRawAxis(4) * 0.3);
+        double speed = (-x_1.getRawAxis(1) * 0.6);
+        double turn = (x_1.getRawAxis(4) * 0.3);
         double left = speed + turn;
         double right = speed - turn;
         l_motor.set(left);
