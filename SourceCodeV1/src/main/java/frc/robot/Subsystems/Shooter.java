@@ -6,16 +6,24 @@ import frc.robot.Subsystems.Constants;
  * @since 01/19/2020
  * @version 01/19/2020
  * @apiNote This class is dedicated to the beginning of what will be our shooting mechanism. It will work with the limelight class most likely. 
+ * Going to use the 775 Pro Motors (Will use a maximum of 2 Motor Controllers)
  */
+
 public class Shooter {
     private boolean alignmentReady = false;
-    private VictorSP shooterMotor;
+    private Spark shooterMotor1;
+    private Spark shooterMotor2;
+    private Solenoid sol;
+    private Solenoid sol2;
+    private Servo serv1;
     public Shooter(){
-        shooterMotor = new VictorSP(Constants.SHOOTERMOTOR1_PWM);
-
+        shooterMotor1 = new Spark(Constants.SHOOTERMOTOR1_PWM);
+        shooterMotor2 = new Spark(Constants.SHOOTERMOTOR2_PWM);
+        //serv1 = new Servo()
     }
     public void shootBalls(){
-        shooterMotor.set(Constants.FULL_SPEED);
+        shooterMotor1.set(Constants.FULL_SPEED);
+        shooterMotor2.set(-Constants.FULL_SPEED);
     }
     public void swivel(){}
     public void findTarget(){

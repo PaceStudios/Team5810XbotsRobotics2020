@@ -12,7 +12,8 @@ public final class Constants{
     public static final int DRIVEBASEMOTOR3_PWM = 2;
     public static final int DRIVEBASEMOTOR4_PWM = 3;
     public static final int SHOOTERMOTOR1_PWM = 4;
-    public static final int INTAKEMOTOR1_PWM = 5;
+    public static final int SHOOTERMOTOR2_PWM = 5;
+    public static final int INTAKEMOTOR1_PWM = 6;
     public static final int dumbBotArcadeBaseMotorL_PWM = 0;
     public static final int dumbBotArcadeBaseMotorR_PWM = 1;
     public static final int XBOXCONTROL_PORT = 0;
@@ -24,7 +25,9 @@ public final class Constants{
     public static final double FULL_SPEED = 1.0;
     public static final double SEMI_SPEED = 0.8;
     public static final double DEAD_SPEED = 0.0;
-
+    public static final double REVERSE_FULL_SPEED = -1.0;
+    public static final double REVERSE_SEMI_SPEED = -0.8;
+    public static final double REVERSE_HALF_SPEED = -0.5;
     /**
      * String values
      */
