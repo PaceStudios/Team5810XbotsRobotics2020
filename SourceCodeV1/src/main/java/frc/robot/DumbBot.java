@@ -57,8 +57,8 @@ public class DumbBot extends TimedRobot
     }
     @Override
     public void teleopPeriodic(){
-        double speed = (-x_1.getRawAxis(1) * 0.6);
-        double turn = (x_1.getRawAxis(4) * 0.3);
+        double speed = (-x_1.getRawAxis(1) * 1.0);
+        double turn = (x_1.getRawAxis(4) * 0.8);
         double left = speed + turn;
         double right = speed - turn;
         l_motor.set(left);
