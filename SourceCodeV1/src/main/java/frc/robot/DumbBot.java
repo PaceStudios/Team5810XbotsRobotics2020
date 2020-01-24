@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
-//import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Subsystems.*;
 
 
 //import Constants class
@@ -17,6 +18,8 @@ public class DumbBot extends TimedRobot
     private Victor l_motor = new Victor(Constants.dumbBotArcadeBaseMotorL_PWM);
     private Victor r_motor = new Victor(Constants.dumbBotArcadeBaseMotorR_PWM);
     private XboxController x_1 = new XboxController(Constants.XBOXCONTROL_PORT);
+    private Joystick joy1 = new Joystick(Constants.JOYSTICK_PORT);
+    private Intake intake = new Intake(Constants.DUMBBOT_ARCADEBOT_INTAKEMOTOR_PWM);
 
     public DumbBot(){
         mode = "Dumb Bot LMAO";
@@ -38,6 +41,7 @@ public class DumbBot extends TimedRobot
     @Override
     public void teleopInit(){
         super.teleopInit();
+        
     }
     @Override
     public void testInit(){
@@ -63,6 +67,12 @@ public class DumbBot extends TimedRobot
         double right = speed - turn;
         l_motor.set(left);
         r_motor.set(right);
+        if(joy1.getRawButtonPressed(1)){
+            intake.outtakeBalls(1);
+        }
+        if(joy1.getRawButtonPressed(2)){
+            intake.intakeBalls(Constants.FULL_SPEED);
+        }
 
     }
     @Override

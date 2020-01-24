@@ -12,20 +12,17 @@ public class Intake
 {
     // Motors can be changed according to what names they are.
     private boolean intakeEngaged = false;
-    private Spark intake;
+    private Spark intake01;
     public Intake(){
-        
-        intake = new Spark(Constants.INTAKEMOTOR1_PWM);
     }
-    
-    
+    public Intake(int pwm1){
+        intake01 = new Spark(pwm1);
+    }
     public void intakeBalls(double speed){
-        intake.set(-speed);
+        intake01.set(-speed);
         }
-        
-
     public void outtakeBalls(double speed){
-        intake.set(speed);
+        intake01.set(speed);
     }
     public boolean getIntakeStatus(){
         return intakeEngaged;
@@ -34,7 +31,7 @@ public class Intake
         intakeEngaged = flag;
     }
     public void killAllMotors(){
-        intake.set(Constants.DEAD_SPEED);
+        intake01.set(Constants.DEAD_SPEED);
     }
     
 }

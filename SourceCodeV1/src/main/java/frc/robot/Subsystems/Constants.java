@@ -16,6 +16,9 @@ public final class Constants{
     public static final int INTAKEMOTOR1_PWM = 6;
     public static final int dumbBotArcadeBaseMotorL_PWM = 0;
     public static final int dumbBotArcadeBaseMotorR_PWM = 1;
+    public static final int DUMBBOT_ARCADEBOT_LIFT = 3;
+    public static final int DUMBBOT_ARCADEBOT_WRIST = 2;
+    public static final int DUMBBOT_ARCADEBOT_INTAKEMOTOR_PWM = 4;
     public static final int XBOXCONTROL_PORT = 0;
     public static final int JOYSTICK_PORT = 1;
     /*
