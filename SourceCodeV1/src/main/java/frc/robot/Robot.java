@@ -46,9 +46,59 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopPeriodic() {
+<<<<<<< Updated upstream
     timer01.reset();
     timer01.start();
     driveWithJoystick(true);
+=======
+    timer01.reset();              // Resets the timer for the round on the RoboRio
+    timer01.start();              // Starts the timer on the RoboRio
+    driveWithXboxControl(true);      // Sets the method for driving in TeleOp, was modified to work with an Xbox Controller 
+    if (m_joystick.getRawButton(1)){  // Method working with the Intake and Outtake for the Robot (Will be Eventually modified)
+      intake1.setEngaged(true);
+      intake1.intakeBalls(0.8, true);
+    }
+    else
+    {
+      intake1.setEngaged(false);
+    }
+    if (m_joystick.getRawButton(2)){
+      intake1.outtakeBalls(0.8, true);
+    }
+    if(m_controller.getRawButton(1)){ // Red Button 'A'. Toggles itself on or off based on button press. 
+      isAimOn = !isAimOn;
+      while(isAimOn){
+        aimWithVision(limelight.getTable());
+      }
+    }
+    /*
+    Responsible for dealing with the TeleOp alignment
+    */
+    if(m_joystick.getRawButton(7)){
+      align.moveUp(2);
+    }
+    if(m_joystick.getRawButton(10)){
+      align.moveDown(2);
+    }
+    if(m_joystick.getRawButton(8)){
+      align.moveLeft(2);
+    }
+    if(m_joystick.getRawButton(11)){
+      align.moveRight(2);
+    }
+    if(m_joystick.getRawButton(9)){
+      align.moveUp(0.5);
+    }
+    if(m_joystick.getRawButton(12)){
+      align.moveDown(0.5);
+    }
+    if(m_joystick.getRawButton(5)){
+      align.moveLeft(0.5);
+    }
+    if(m_joystick.getRawButton(6)){
+      align.moveRight(0.5);
+    }
+>>>>>>> Stashed changes
   }
   @Override
   public void disabledInit(){
