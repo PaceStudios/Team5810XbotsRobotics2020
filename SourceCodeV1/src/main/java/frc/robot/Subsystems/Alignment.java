@@ -13,16 +13,16 @@ public class Alignment{
     public Alignment(){
     }
     public void moveUp(double distance){
-        mydrive.moveExactDistance(distance, Constants.MODE_UP);
+       // mydrive.moveExactDistance(distance, Constants.MODE_UP);
     }
     public void moveLeft(double distance){
-        mydrive.moveExactDistance(distance, Constants.MODE_DOWN);
+        //mydrive.moveExactDistance(distance, Constants.MODE_DOWN);
     }
     public void moveRight(double distance){
-        mydrive.moveExactDistance(distance, Constants.MODE_RIGHT);
+        //mydrive.moveExactDistance(distance, Constants.MODE_RIGHT);
     }
     public void moveDown(double distance){
-        mydrive.moveExactDistance(distance, Constants.MODE_LEFT);
+        //mydrive.moveExactDistance(distance, Constants.MODE_LEFT);
     }
     public boolean isRobotAligned(){
         return isAligned;

@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+//import edu.wpi.first.wpilibj.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Joystick;
@@ -22,10 +22,6 @@ public class DumbBot extends TimedRobot
     private final String mode;
     private Victor l_motor = new Victor(Constants.dumbBotArcadeBaseMotorL_PWM);
     private Victor r_motor = new Victor(Constants.dumbBotArcadeBaseMotorR_PWM);
-<<<<<<< Updated upstream
-    private XboxController joy_1 = new XboxController(Constants.xboxPC_Port);
-
-=======
     private XboxController x_1 = new XboxController(Constants.XBOXCONTROL_PORT);
     private Joystick joy1 = new Joystick(Constants.JOYSTICK_PORT);
     private Intake intake = new Intake(Constants.DUMBBOT_ARCADEBOT_INTAKEMOTOR_PWM);
@@ -43,7 +39,6 @@ public class DumbBot extends TimedRobot
     public double getAxis2_value = 0;
     public double turnValue = 0;
     public double speedValue = 0;
->>>>>>> Stashed changes
     public DumbBot(){
         mode = "Dumb Bot LMAO";
     }
@@ -95,10 +90,6 @@ public class DumbBot extends TimedRobot
     }
     @Override
     public void teleopPeriodic(){
-<<<<<<< Updated upstream
-        double speed = (-joy_1.getRawAxis(1) * 0.6);
-        double turn = (joy_1.getRawAxis(4) * 0.3);
-=======
         getAxis2_value = x_1.getRawAxis(2);
         getAxis5_value = x_1.getRawAxis(5);
         
@@ -106,7 +97,6 @@ public class DumbBot extends TimedRobot
         speedValue = speed;
         turn = (x_1.getRawAxis(4) * 0.8);
         turnValue = turn;
->>>>>>> Stashed changes
         double left = speed + turn;
         double right = speed - turn;
         if((x_1.getTriggerAxis(Hand.kRight)+(-x_1.getTriggerAxis(Hand.kLeft))==0)){

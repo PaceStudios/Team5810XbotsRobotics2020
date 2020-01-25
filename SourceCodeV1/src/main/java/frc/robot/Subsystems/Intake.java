@@ -1,15 +1,4 @@
 package frc.robot.Subsystems;
-<<<<<<< Updated upstream
-public class Intake{
-    public Intake(){
-        // Enter intialiization code here.
-    }
-    public void intializeIntakeMotors(int speed_1, int speed_2, int speed_3, int speed_4){}
-    
-    public void intakeBalls(){}
-
-    public void outtakeBalls(){}
-=======
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.*;
 import frc.robot.Subsystems.Constants;
@@ -59,7 +48,6 @@ public class Intake
             intake01.set(0);
         }
     }
->>>>>>> Stashed changes
     
 
 }

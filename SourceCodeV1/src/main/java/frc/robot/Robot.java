@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.*;
 import frc.robot.Subsystems.*;
 
 
 public class Robot extends TimedRobot {
-  private final XboxController m_controller = new XboxController(0);
+  private final XboxController m_controller = new XboxController(Constants.XBOXCONTROL_PORT);
+  private final Joystick m_joystick = new Joystick(Constants.JOYSTICK_PORT);
   private final DriveTrain m_mecanum = new DriveTrain();
   private final Timer timer01 = new Timer();
   public Robot(){
@@ -46,11 +48,7 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopPeriodic() {
-<<<<<<< Updated upstream
-    timer01.reset();
-    timer01.start();
-    driveWithJoystick(true);
-=======
+    /*
     timer01.reset();              // Resets the timer for the round on the RoboRio
     timer01.start();              // Starts the timer on the RoboRio
     driveWithXboxControl(true);      // Sets the method for driving in TeleOp, was modified to work with an Xbox Controller 
@@ -71,9 +69,7 @@ public class Robot extends TimedRobot {
         aimWithVision(limelight.getTable());
       }
     }
-    /*
-    Responsible for dealing with the TeleOp alignment
-    */
+    
     if(m_joystick.getRawButton(7)){
       align.moveUp(2);
     }
@@ -98,7 +94,7 @@ public class Robot extends TimedRobot {
     if(m_joystick.getRawButton(6)){
       align.moveRight(0.5);
     }
->>>>>>> Stashed changes
+    */
   }
   @Override
   public void disabledInit(){
