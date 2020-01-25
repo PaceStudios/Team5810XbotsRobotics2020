@@ -16,20 +16,41 @@ rpm2rads = 0.104719755  # [(rad/s)/rpm]
 rads2rpm = 9.549296596425384  # [rpm/(rad/s)]
 in2ft = 0.0833333  # [ft/in]
 in2m = 0.0254  # [m/in]
+oz2kg = 0.0283495  # [kg/oz]
 
 # declaring universal constants
 g = 9.807  # [m/s^2] Gravitational Acceleration
 h_low = 0.46 + 0.25 / 2  # [m] Low Target Height
 h_high = 2.49  # [m] High Target Height
-m_ball = 0.1  # [kg] Ball Mass
+m_ball = 5 * oz2kg  # [kg] Ball Mass
 d_ball = 0.18  # [m] Ball Diameter
 a_ball = pi * (d_ball / 2) ** 2  # [m^2] Max Ball Cross-Sectional Area (Projected Area)
 vis_air = 1.562e-5  # [m^2/s] @ 25C Air Kinematic Viscosity
 rho_air = 1.184  # [kg/m^3] @ 25C Air Density
 c_d = 0.5  # Sphere Drag Coefficient
-# v_t = sqrt(2 * m_ball * g / (rho_air * a_ball * c_d))  # [m/s] Ball Terminal Velocity
 mu = 0.5 * c_d * rho_air * a_ball / m_ball  # [m^-1] Ball Drag Acceleration Coefficient
 invalid = "Error: Invalid Input"
+
+
+# static function declarations
+def lam(Q, Zeta):
+    return Zeta - (Q + 0.5 * sinh(2 * Q))
+
+
+def x_func(Q, Zeta):
+    return cosh(Q) / lam(Q, Zeta)
+
+
+def y_func(Q, Zeta):
+    return sinh(2 * Q) / lam(Q, Zeta)
+
+
+def x_drag(Q_initial, Q, Zeta):
+    return -1 * quadrature(x_func, Q_initial, Q, Zeta, vec_func=False)[0] / mu
+
+
+def y_drag(Q_initial, Q, Zeta):
+    return -1 * quadrature(y_func, Q_initial, Q, Zeta, vec_func=False)[0] / (2 * mu)
 
 
 # class declarations
@@ -54,6 +75,8 @@ class Projectile:
         self.v_y0 = np.empty(2)
         self.Q_0 = np.empty(2)
         self.zeta = np.empty(2)
+        self.Q_f = np.empty(2)
+        self.x_f_d = np.empty(2)
 
     def start(self):
         # function: asks for distance from target in [ft] and target selection [high or low]
@@ -76,7 +99,7 @@ class Projectile:
                       "\n[h] for High target\n[l] for Low target")
 
         max_dist_g = (self.v_0 / g) * \
-                          sqrt(self.v_0 ** 2 - 2 * self.h * g) * m2ft
+                     sqrt(self.v_0 ** 2 - 2 * self.h * g) * m2ft
 
         while True:
             try:
@@ -102,6 +125,7 @@ class Projectile:
 
         # launch_angle = atan((a +- sqrt(b - c)) / d)
         # launch_angle = atan((a +- e)/d)
+
         a = self.v_0 ** 2
         b = a ** 2
         c = g * (g * self.dist_m_g ** 2 + 2 * self.h * a)
@@ -141,33 +165,14 @@ class Projectile:
             self.Q_0[i] = asinh(tan(initial_angle_guesses[i]))
             self.v_x0[i] = self.v_0 * cos(initial_angle_guesses[i])
             self.v_y0[i] = self.v_0 * sin(initial_angle_guesses[i])
-            self.zeta[i] = g / (mu * self.v_x0[i]) + self.Q_0[i] + 0.5 * sinh(2 * self.Q_0[i])
-            
-    # def Q_f(self, final_angle_guesses):
-    #     # function:
-    #     # input:
-    #
-    #     for i in range(np.size(final_angle_guesses)):
-    #         quadrature()
-    #         newton()
+            self.zeta[i] = g / (mu * self.v_x0[i] ** 2) + self.Q_0[i] + 0.5 * sinh(2 * self.Q_0[i])
 
-    # def lam(self, Q):
-    #     # function:
-    #     # input:
-    #     # return:
-    #
-    #     for i in range(np.size(Q)):
-    #
-    #
-    #     return
+    def q_final(self, final_angle_guesses):
+        # function:
+        # input:
 
-# self.v_x0 = self.v_0 * self.angle
-# self.v_y0 = self.v_0 * self.angle
-# self.Q_0 = asinh(self.v_y0 / self.v_x0)
-# self.A = g / (mu * self.v_x0 ** 2.0) + (self.Q_0 + 0.5 * sinh(2.0 * self.Q_0))
-
-
-# def method1(self):
+        for i in range(np.size(final_angle_guesses)):
+            self.Q_f[i] = asinh(tan(final_angle_guesses[i]))
 
 
 if __name__ == "__main__":
@@ -177,25 +182,62 @@ if __name__ == "__main__":
     w_initial = rpm_initial * rpm2rads  # [rad/s]
     r_launch_wheel = 4 * in2m  # [m] Radius
     v_initial = r_launch_wheel * w_initial  # [m/s] Velocity
-    print(v_initial)
     Re_max = d_ball * v_initial / vis_air  # Reynolds Number
     data_pts = 100
 
+    # calculating ball trajectories with only gravity acting
     trajectory = Projectile(h_initial, v_initial, data_pts)
     trajectory.start()
     trajectory.launch_angle_g()
-    [x_path_m, y1_path_m, y2_path_m] = trajectory.ball_path_g()
-    x_path_ft = x_path_m * m2ft
-    y1_path_ft = y1_path_m * m2ft
-    y2_path_ft = y2_path_m * m2ft
+    angle1_0_g = trajectory.angle_0_g[0]
+    angle2_0_g = trajectory.angle_0_g[1]
+    [x_path_m_g, y1_path_m_g, y2_path_m_g] = trajectory.ball_path_g()
+    x_path_ft_g = x_path_m_g * m2ft
+    y1_path_ft_g = y1_path_m_g * m2ft
+    y2_path_ft_g = y2_path_m_g * m2ft
 
+    # start of ball trajectory calculations with gravity & drag acting
+    # initial angle guesses
+    trajectory.drag_cte(trajectory.angle_0_g)
+    trajectory.q_final(trajectory.angle_f_g)
+    # final angle guesses
+    angle1_d = atan(sinh(trajectory.Q_f[0]))
+    angle2_d = atan(sinh(trajectory.Q_f[1]))
+    # linearly spaced array of flight angle substitute variable
+    Q1 = np.arcsinh(np.tan(np.linspace(angle1_0_g, angle1_d, data_pts)))
+    Q2 = np.arcsinh(np.tan(np.linspace(angle2_0_g, angle2_d, data_pts)))
+    # vectorized x & y position functions
+    x_vec = np.vectorize(x_drag)
+    y_vec = np.vectorize(y_drag)
+    # reacquiring drag model constants
+    zeta1 = trajectory.zeta[0]
+    zeta2 = trajectory.zeta[1]
+    Q1_0 = trajectory.Q_0[0]
+    Q2_0 = trajectory.Q_0[1]
+    # calculating ball trajectories with drag & gravity acting
+    x1_path_ft_d = x_vec(Q1_0, Q1, zeta1) * m2ft
+    x2_path_ft_d = x_vec(Q2_0, Q2, zeta2) * m2ft
+    y1_path_ft_d = y_vec(Q1_0, Q1, zeta1) * m2ft
+    y2_path_ft_d = y_vec(Q2_0, Q2, zeta2) * m2ft
+
+    # plotting trajectories
     fig, ax = plt.subplots()
+    legend_str = "Launch Angle: {:.2f}$^\circ$"
     line1 = ax.plot(
-        x_path_ft, y1_path_ft, label="Launch Angle [deg]:" + "{0:.2f}".format(degrees(trajectory.angle_0_g[0])), color="blue")
+        x_path_ft_g, y1_path_ft_g, "b:", label=legend_str
+        .format(degrees(angle1_0_g)))
     line2 = ax.plot(
-        x_path_ft, y2_path_ft, label="Launch Angle [deg]:" + "{0:.2f}".format(degrees(trajectory.angle_0_g[1])), color="red")
+        x_path_ft_g, y2_path_ft_g, "r:", label=legend_str
+        .format(degrees(angle2_0_g)))
+    line3 = ax.plot(
+        x1_path_ft_d, y1_path_ft_d, "b", label=legend_str
+        .format(degrees(angle1_0_g)))
+    line4 = ax.plot(
+        x2_path_ft_d, y2_path_ft_d, "r", label=legend_str
+        .format(degrees(angle2_0_g)))
     ax.legend()
-    ax.set_title("Ball Trajectory")
+    ax.set_title("Ball Trajectory "
+                 "(Dotted=Gravity, Solid=Drag+Gravity)")
     ax.set_xlabel("x (ft)")
     ax.set_ylabel("y (ft)")
     plt.show()

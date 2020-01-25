@@ -39,42 +39,52 @@ A = g / (mu * u_0**2.0) + (Q_0 + 0.5 * sinh(2.0 * Q_0))
 
 
 def lam(Q):
+    # function: drag projectile model substitute variable
     return A - (Q + 0.5 * sinh(2.0 * Q))
 
 
 def u_s(Q):
+    # function: x velocity
     return sqrt(g / mu) / sqrt(lam(Q))
 
 
 def v_s(Q):
+    # function: y velocity
     return sqrt(g / mu) * sinh(Q) / sqrt(lam(Q))
 
 
 def f_t(Q):
+    # function: time of flight integral function
     return cosh(Q) / sqrt(lam(Q))
 
 
 def f_x(Q):
+    # function: x position integral function
     return cosh(Q) / lam(Q)
 
 
 def f_y(Q):
+    # function: y position integral function
     return sinh(2.0 * Q) / lam(Q)
 
 
 def t_s(Q):
+    # function: time of flight
     return - quadrature(f_t, Q_0, Q, vec_func=False)[0] / sqrt(g * mu)
 
 
 def x_s(Q):
+    # function: x position
     return x_0 - quadrature(f_x, Q_0, Q, vec_func=False)[0] / mu
 
 
 def y_s(Q):
+    # function: y position
     return y_0 - quadrature(f_y, Q_0, Q, vec_func=False)[0] / (2.0 * mu)
 
 
 def y_s_p(Q):
+    # function: y position derivative
     return -(1.0 / (2.0 * mu)) * sinh(2.0 * Q) / lam(Q)
 
 
