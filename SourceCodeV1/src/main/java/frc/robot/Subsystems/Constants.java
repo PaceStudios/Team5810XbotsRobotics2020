@@ -2,18 +2,33 @@ package frc.robot.Subsystems;
 /**
  * @author John C. Pace
  * @since 01/06/2020
- * @version 01/20/2020
+ * @version 01/27/2020
  * @apiNote This class is dedicated to creating permanent values to any number value that may be used in the program, for a higher efficiency on the compiler. 
  */
 public final class Constants{
-    // Plan to add all constant variables here: 
-    public static final int DRIVEBASEMOTOR1_PWM = 0; 
+    /*
+    All Motor Values for Main Robot added here:
+    */
+    public static final int DRIVEBASEMOTOR1_PWM = 0;  
     public static final int DRIVEBASEMOTOR2_PWM = 1;
     public static final int DRIVEBASEMOTOR3_PWM = 2;
     public static final int DRIVEBASEMOTOR4_PWM = 3;
-    public static final int SHOOTERMOTOR1_PWM = 4;
-    public static final int SHOOTERMOTOR2_PWM = 5;
+    public static final int SHOOTERMOTERS_PWM = 4;
+    public static final int BELTDRIVEMOTOR_PWM = 5;
     public static final int INTAKEMOTOR1_PWM = 6;
+    public static final int INTAKEMOTOR2_PWM = 7;
+    public static final int EXTRAMOTOR1_PWM = 8;
+    public static final int EXTRAMOTOR2_PWM = 9;
+
+    /* DiO and Analog Values Here:
+    */
+    public static final int SERVO_MOTOR1_DIO = 0;
+    public static final int GYRO_ANALOG_PORT = 0;
+
+    /*
+    All Dumbot Values for Dumbot added here:
+    */
+
     public static final int dumbBotArcadeBaseMotorL_PWM = 0;
     public static final int dumbBotArcadeBaseMotorR_PWM = 1;
     public static final int DUMBBOT_ARCADEBOT_LIFT = 3;
