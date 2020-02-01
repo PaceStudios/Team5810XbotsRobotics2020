@@ -7,15 +7,18 @@ package frc.robot.Subsystems;
  */
 public final class Constants{
     // Plan to add all constant variables here: 
-    public static final int driveBaseMotor1_PWM = 0; 
-    public static final int driveBaseMotor2_PWM = 1;
-    public static final int driveBaseMotor3_PWM = 2;
-    public static final int driveBaseMotor4_PWM = 3;
+    public static final int DRIVEBASEMOTOR1_PWM = 0; 
+    public static final int DRIVEBASEMOTOR2_PWM = 1;
+    public static final int DRIVEBASEMOTOR3_PWM = 2;
+    public static final int DRIVEBASEMOTOR4_PWM = 3;
     public static final int dumbBotArcadeBaseMotorL_PWM = 0;
     public static final int dumbBotArcadeBaseMotorR_PWM = 1;
     public static final int DUMBBOT_ARCADEBOT_LIFT = 3;
     public static final int DUMBBOT_ARCADEBOT_WRIST = 2;
     public static final int DUMBBOT_ARCADEBOT_INTAKEMOTOR_PWM = 4;
+    public static final int INTAKEMOTOR1_PWM = 4; // random port for now. John change this 
+    public static final int SHOOTERMOTOR1_PWM = 5; // random port for now. John change this
+    public static final int SHOOTERMOTOR2_PWM = 5; // random port for now. John change this
     public static final int XBOXCONTROL_PORT = 0;
     public static final int JOYSTICK_PORT = 1;
     /*

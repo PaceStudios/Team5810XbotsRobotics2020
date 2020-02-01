@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.Timer;
+// import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.*;
-import frc.robot.Subsystems.*;
-import java.util.*;
+// import edu.wpi.first.wpilibj.*;
+// import frc.robot.Subsystems.*;
+// import java.util.*;
 
 
 //import Constants class
@@ -24,8 +24,8 @@ public class DumbBot extends TimedRobot
     private Victor r_motor = new Victor(Constants.dumbBotArcadeBaseMotorR_PWM);
     private XboxController x_1 = new XboxController(Constants.XBOXCONTROL_PORT);
     private Joystick joy1 = new Joystick(Constants.JOYSTICK_PORT);
-    private Intake intake = new Intake(Constants.DUMBBOT_ARCADEBOT_INTAKEMOTOR_PWM);
-    private Arm arm = new Arm();
+    // private Intake intake = new Intake(Constants.DUMBBOT_ARCADEBOT_INTAKEMOTOR_PWM);
+    // private Arm arm = new Arm();
     public double speed = 0;
     public double intake_power = 0;
     public double lift_power = 0;
@@ -117,7 +117,7 @@ public class DumbBot extends TimedRobot
             intakeActivated = false;
             outtakeActivated = true;
         }
-        intake.intakeFunct(joy1, intake_power);;
+        // intake.intakeFunct(joy1, intake_power);;
         if(joy1.getRawButton(3) == true){
             smartdashboredtestvalue = 1;
         }
@@ -131,7 +131,7 @@ public class DumbBot extends TimedRobot
         else{
             lift_power = 0;
         }
-        arm.moveArm(joy1, lift_power);
+        // arm.moveArm(joy1, lift_power);
         if(joy1.getRawButton(5)==true){
             wrist_power =1;
         }
@@ -141,7 +141,7 @@ public class DumbBot extends TimedRobot
         else{
             wrist_power = 0;
         }
-        arm.moveWrist(joy1, wrist_power);
+        // arm.moveWrist(joy1, wrist_power);
 
     }
     @Override

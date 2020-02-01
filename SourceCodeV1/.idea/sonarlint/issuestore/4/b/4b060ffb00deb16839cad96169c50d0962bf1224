@@ -1,23 +1,0 @@
-
-rsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«ßó
-ysquid:S00116"\Rename this field "m_frontRightMotor" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ò•¼¤ùÿÿÿÿ
-rsquid:S00116"ZRename this field "m_backLeftMotor" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(–†é÷
-xsquid:S00116 "[Rename this field "m_backRightMotor" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ö‰ûÄÿÿÿÿÿ
-ssquid:S00116!"[Rename this field "m_frontLeftMotor" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Î˜‹®
-usquid:S00116%"]Rename this field "m_frontLeftEncoder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™ıÏ
-{squid:S00116&"^Rename this field "m_frontRightEncoder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒÅòšüÿÿÿÿ
-ysquid:S00116'"\Rename this field "m_backLeftEncoder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(†Šùûúÿÿÿÿ
-usquid:S00116("]Rename this field "m_backRightEncoder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ú¿©Ó
-vsquid:S00116*"^Rename this field "m_frontLeftLocation" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(î¾‚ï
-wsquid:S00116+"_Rename this field "m_frontRightLocation" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï˜¹Û
-zsquid:S00116,"]Rename this field "m_backLeftLocation" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ß„¶ÿÿÿÿÿ
-{squid:S00116-"^Rename this field "m_backRightLocation" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ı¦„âúÿÿÿÿ
-€squid:S00116/"cRename this field "m_frontLeftPIDController" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Î»ÆÀúÿÿÿÿ
-squid:S001160"dRename this field "m_frontRightPIDController" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çåôÇùÿÿÿÿ
-squid:S001161"bRename this field "m_backLeftPIDController" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ûñü©ıÿÿÿÿ
-{squid:S001162"cRename this field "m_backRightPIDController" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿøóÑ
-nsquid:S001164"QRename this field "m_gyro" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Îè¦Âüÿÿÿÿ
-osquid:S001166"WRename this field "m_kinematics" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÁæçÁ
-rsquid:S00116:"URename this field "m_odometry" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(úŠíøÿÿÿÿ
-wsquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ßÙáÕÿÿÿÿÿ
-rsquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ÿßá
