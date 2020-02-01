@@ -1,5 +1,5 @@
 package frc.robot.Subsystems;
-import java.awt.*;
+// import java.awt.*;
 
 /**
  * @author John C. Pace
@@ -9,10 +9,10 @@ import java.awt.*;
  */
 public class Alignment{
     private boolean isAligned = false; 
-    private Color myColor;
+    // private Color myColor;
     private DriveTrain mydrive = new DriveTrain();
     public Alignment(){
-        myColor = Color.BLACK; 
+        // myColor = Color.BLACK; 
     }
     public void moveUp(double distance){
         mydrive.moveExactDistance(distance, Constants.MODE_UP);
