@@ -37,10 +37,10 @@ public class DriveTrain {
   public static final double kHalfSpeed = 1.5; // 1.5 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-  private final SpeedController m_frontRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR1_PWM); // Motor 1
-  private final SpeedController m_backLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR2_PWM); // Motor 2
-  private final SpeedController m_backRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR3_PWM); // Motor 3
-  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR4_PWM); // Motor 4
+  private final SpeedController m_frontRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR2_PWM); // Motor 1
+  private final SpeedController m_backLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR3_PWM); // Motor 2
+  private final SpeedController m_backRightMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR4_PWM); // Motor 3
+  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(Constants.DRIVEBASEMOTOR1_PWM); // Motor 4
   
   
   /// DO NOT TOUCH THIS YET, IN PROCESS OF LEARNING

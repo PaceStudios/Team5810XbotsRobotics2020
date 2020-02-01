@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
   private Shooter shoot = new Shooter();
   private Climber climb = new Climber();
   private Alignment align = new Alignment();
+
   @Override
   public void robotInit(){
     super.robotInit();
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     isAimOn = false;
     }
+
   @Override
   public void autonomousInit() {
     
@@ -76,6 +78,7 @@ public class Robot extends TimedRobot {
     super.teleopInit();
 
   }
+  
   @Override
   public void teleopPeriodic() {
     timer01.reset();              // Resets the timer for the round on the RoboRio
