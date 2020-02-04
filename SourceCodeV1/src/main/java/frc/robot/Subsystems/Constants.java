@@ -9,10 +9,10 @@ public final class Constants{
     /*
     All Motor Values for Main Robot added here:
     */
-    public static final int DRIVEBASEMOTOR1_PWM = 0;  
-    public static final int DRIVEBASEMOTOR2_PWM = 1;
-    public static final int DRIVEBASEMOTOR3_PWM = 2;
-    public static final int DRIVEBASEMOTOR4_PWM = 3;
+    public static final int FRONTLEFTMOTOR_PWM = 1;  
+    public static final int FRONTRIGHTMOTOR_PWM = 3;
+    public static final int REARLEFTMOTOR_PWM = 0;
+    public static final int REARRIGHTMOTOR_PWM = 2;
     public static final int SHOOTERMOTERS_PWM = 4;
     public static final int BELTDRIVEMOTOR_PWM = 5;
     public static final int INTAKEMOTOR1_PWM = 6;
