@@ -148,6 +148,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic(){
     super.testPeriodic();
+    driveWithXboxControl(true);
+    
   }
 
   private void driveWithXboxControl(boolean fieldRelative) {
