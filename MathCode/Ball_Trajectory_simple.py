@@ -1,4 +1,4 @@
-# File: Ball-Trajectory.py
+# File: Ball_Trajectory_simple.py
 # Description: This file will calculate the necessary launch angle
 #                for shooting FRC balls into marked holes
 
@@ -6,7 +6,7 @@
 from math import pi, radians, degrees, sin, cos, atan, sqrt, sinh, cosh, asinh, tan
 import numpy as np
 from scipy.integrate import quadrature
-from scipy.optimize import newton
+from scipy.optimize import newton, fsolve
 import matplotlib.pyplot as plt
 
 # unit conversion constants
@@ -36,22 +36,27 @@ invalid = "Error: Invalid Input"
 
 # static function declarations
 def lam(Q, Zeta):
+    # function: calculate drag substitute variable
     return Zeta - (Q + 0.5 * sinh(2 * Q))
 
 
 def x_func(Q, Zeta):
+    # function: x_drag integral function
     return cosh(Q) / lam(Q, Zeta)
 
 
-def y_func(Q, Zeta):
-    return sinh(2 * Q) / lam(Q, Zeta)
-
-
 def x_drag(Q_initial, Q, Zeta):
+    # function: calculates x position of a projectile experiencing drag
     return -1 * quadrature(x_func, Q_initial, Q, Zeta, vec_func=False)[0] / mu
 
 
+def y_func(Q, Zeta):
+    # function: y_drag integral function
+    return sinh(2 * Q) / lam(Q, Zeta)
+
+
 def y_drag(Q_initial, Q, Zeta):
+    # function: calculates x position of a projectile experiencing drag
     return -1 * quadrature(y_func, Q_initial, Q, Zeta, vec_func=False)[0] / (2 * mu)
 
 
@@ -86,7 +91,7 @@ class Projectile:
         while True:
             try:
                 target = str(
-                    input("\nEnter [h] for High target or [l] for Low target: "))
+                        input("\nEnter [h] for High target or [l] for Low target: "))
             except ValueError:
                 print("\n", invalid)
                 continue
@@ -98,17 +103,17 @@ class Projectile:
                 break
             else:
                 print("\n", invalid,
-                      "\n[h] for High target\n[l] for Low target")
+                        "\n[h] for High target\n[l] for Low target")
 
         max_dist_g = (self.v_0 / g) * \
-            sqrt(self.v_0 ** 2 - 2 * self.h * g) * m2ft
+                sqrt(self.v_0 ** 2 - 2 * self.h * g) * m2ft
 
         while True:
             try:
-                print(
-                    "\nMax distance for selected target is {0:.2f} [ft]".format(max_dist_g))
+                print("\nMax distance for selected target is {0:.2f} [ft]"
+                        .format(max_dist_g))
                 dist_g = float(
-                    input("Enter linear distance from target [ft]: "))
+                        input("Enter linear distance from target [ft]: "))
             except ValueError:
                 print("\n", invalid)
                 continue
@@ -126,9 +131,6 @@ class Projectile:
     def launch_angle_g(self):
         # function:
 
-        # launch_angle = atan((a +- sqrt(b - c)) / d)
-        # launch_angle = atan((a +- e)/d)
-
         angle = np.empty(2)
         a = self.v_0 ** 2
         b = a ** 2
@@ -143,19 +145,13 @@ class Projectile:
         # function:
         # returns:
 
-        # y = c1 * x + c2 * x^2
-        # c1 = tan(launch_angle)
-        # c2 = g / (2 * v_initial^2 * cos^2(launch_angle))
-
-        c1 = None
-        c2 = None
         self.x_g = np.linspace(0, self.dist_m_g, self.pts)
         c1 = tan(self.angle_0_g)
         c2 = g / (2 * self.v_0 ** 2 * cos(self.angle_0_g) ** 2)
         self.v_xf_g = self.v_0 * cos(self.angle_0_g)
         self.t_g = self.dist_m_g / (self.v_0 * cos(self.angle_0_g))
         self.v_yf_g = self.v_0 * \
-            sin(self.angle_0_g) - g * self.t_g
+                sin(self.angle_0_g) - g * self.t_g
         self.angle_f_g = tan(self.v_yf_g / self.v_xf_g)
         for i in range(self.pts):
             self.y_g[i] = c1 * self.x_g[i] - c2 * self.x_g[i] ** 2
@@ -170,14 +166,13 @@ class Projectile:
         self.v_x0 = self.v_0 * cos(initial_angle_guess)
         self.v_y0 = self.v_0 * sin(initial_angle_guess)
         self.zeta = g / (mu * self.v_x0 ** 2) + \
-            self.Q_0 + 0.5 * sinh(2 * self.Q_0)
+                self.Q_0 + 0.5 * sinh(2 * self.Q_0)
 
     def q_final(self, final_angle_guess):
         # function:
         # input:
 
         self.Q_f = asinh(tan(final_angle_guess))
-
 
 if __name__ == "__main__":
     # declaring local constants
@@ -199,35 +194,54 @@ if __name__ == "__main__":
     y_path_ft_g = y_path_m_g * m2ft
 
     # start of ball trajectory calculations with gravity & drag acting
-    # initial angle guesses
-    trajectory.drag_cte(trajectory.angle_0_g)
-    trajectory.q_final(trajectory.angle_f_g)
-    # final angle guesses
-    angle_d = atan(sinh(trajectory.Q_f))
+    # target coordinates
+    x_tar = trajectory.dist_m_g
+    y_tar = trajectory.h
+    print("\nX Target: {:.2f} ft".format(x_tar * m2ft))
+    print("Y Target: {:.2f} ft".format(y_tar * m2ft))
+    error_x = 1e10
+    error_y = 1e10
+    tol = 1
+    k = trajectory.angle_f_g
+    j = trajectory.angle_0_g
+    while abs(error_y) > tol:
+        # initial angle guess, variables derived: Q_0 & Zeta
+        trajectory.drag_cte(j)
+        while abs(error_x) > tol:
+            # final angle guess, variable derived: Q_f
+            trajectory.q_final(k)
+            x = x_drag(trajectory.Q_0, trajectory.Q_f, trajectory.zeta)
+            error_x = x_tar - x
+            k1 = k
+            k = k1 - error_x * 0.2
+        y = y_drag(trajectory.Q_0, trajectory.Q_f, trajectory.zeta)
+        error_y = y_tar - y
+        j1 = j
+        j = j1 - error_y * 0.2
+
+    angle_0_d = j
+    angle_f_d = k
     # linearly spaced array of flight angle substitute variable
-    Q = np.arcsinh(np.tan(np.linspace(angle_0_g, angle_d, data_pts)))
+    # angle_f_d = atan(sinh(trajectory.Q_f))
+    Q_f = np.arcsinh(np.tan(np.linspace(angle_0_d, angle_f_d, data_pts)))
     # vectorized x & y position functions
     x_vec = np.vectorize(x_drag)
     y_vec = np.vectorize(y_drag)
-    # reacquiring drag model constants
-    zeta = trajectory.zeta
-    Q_0 = trajectory.Q_0
     # calculating ball trajectories with drag & gravity acting
-    x_path_ft_d = x_vec(Q_0, Q, zeta) * m2ft
-    y_path_ft_d = y_vec(Q_0, Q, zeta) * m2ft
+    x_path_ft_d = x_vec(trajectory.Q_0, Q_f, trajectory.zeta) * m2ft
+    y_path_ft_d = y_vec(trajectory.Q_0, Q_f, trajectory.zeta) * m2ft
 
     # plotting trajectories
     fig, ax = plt.subplots()
     legend_str = "Launch Angle: {:.2f}$^\circ$"
     line1 = ax.plot(
-        x_path_ft_g, y_path_ft_g, "b:", label=legend_str
-        .format(degrees(angle_0_g)))
-    line3 = ax.plot(
-        x_path_ft_d, y_path_ft_d, "r", label=legend_str
-        .format(degrees(angle_0_g)))
+            x_path_ft_g, y_path_ft_g, "b", label="Gravity " + legend_str
+            .format(degrees(angle_0_g)))
+    line2 = ax.plot(
+            x_path_ft_d, y_path_ft_d, "r", label="Drag " + legend_str
+            .format(degrees(angle_0_d)))
     ax.legend()
-    ax.set_title("Ball Trajectory "
-                 "(Dotted=Gravity, Solid=Drag+Gravity)")
+    ax.set_title("Ball Trajectory")
     ax.set_xlabel("x (ft)")
     ax.set_ylabel("y (ft)")
     plt.show()

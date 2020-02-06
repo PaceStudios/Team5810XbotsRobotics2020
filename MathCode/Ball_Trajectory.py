@@ -1,4 +1,4 @@
-# File: Ball-Trajectory.py
+# File: Ball_Trajectory.py
 # Description: This file will calculate the necessary launch angle
 #                for shooting FRC balls into marked holes
 
@@ -133,6 +133,7 @@ class Projectile:
         e = sqrt(b - c)
         self.angle_0_g[0] = atan((a + e) / d)  # [rad]
         self.angle_0_g[1] = atan((a - e) / d)  # [rad]
+        # print(self.angle_0_g[1])
 
     def ball_path_g(self):
         # function:
@@ -166,6 +167,7 @@ class Projectile:
             self.v_x0[i] = self.v_0 * cos(initial_angle_guesses[i])
             self.v_y0[i] = self.v_0 * sin(initial_angle_guesses[i])
             self.zeta[i] = g / (mu * self.v_x0[i] ** 2) + self.Q_0[i] + 0.5 * sinh(2 * self.Q_0[i])
+        # print(self.Q_0[1], self.v_x0[1], self.v_y0[1], self.zeta[1])
 
     def q_final(self, final_angle_guesses):
         # function:
@@ -173,6 +175,7 @@ class Projectile:
 
         for i in range(np.size(final_angle_guesses)):
             self.Q_f[i] = asinh(tan(final_angle_guesses[i]))
+        # print(self.Q_f[1])
 
 
 if __name__ == "__main__":
