@@ -1,10 +1,12 @@
 package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj2.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.*;
 import frc.robot.Subsystems.Constants;
-public class SimplifiedMecanum{
+public class SimplifiedMecanum extends SubsystemBase{
     VictorSP frontLeft;
     VictorSP frontRight;
     VictorSP backLeft;

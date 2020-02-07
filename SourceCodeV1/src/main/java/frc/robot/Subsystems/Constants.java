@@ -1,11 +1,13 @@
 package frc.robot.Subsystems;
+import edu.wpi.first.wpilibj2.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * @author John C. Pace
  * @since 01/06/2020
  * @version 01/27/2020
  * @apiNote This class is dedicated to creating permanent values to any number value that may be used in the program, for a higher efficiency on the compiler. 
  */
-public final class Constants{
+public final class Constants extends SubsystemBase{
     /*
     All Motor Values for Main Robot added here:
     */

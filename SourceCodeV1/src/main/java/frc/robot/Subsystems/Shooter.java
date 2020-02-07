@@ -2,6 +2,8 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.*;
 import frc.robot.Subsystems.Constants;
 import frc.robot.Subsystems.*;
+import edu.wpi.first.wpilibj2.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * @author John C. Pace
  * @since 01/19/2020
@@ -10,7 +12,8 @@ import frc.robot.Subsystems.*;
  * Going to use the 775 Pro Motors (Will use a maximum of 2 Motor Controllers)
  */
 
-public class Shooter {
+public class Shooter extends SubsystemBase
+{
     private boolean alignmentReady = false;
     private Spark shooterMotors; // In reality, this object is 2 motors connected to ONE PWM Port with inverted wiring. 
     private Victor beltDriveMotor; // Motor dedicated

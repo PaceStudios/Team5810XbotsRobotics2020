@@ -1,5 +1,7 @@
 package frc.robot.Subsystems;
 import java.awt.*;
+import edu.wpi.first.wpilibj2.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 /**
@@ -8,7 +10,7 @@ import java.awt.*;
  * @version 01/20/2020
  * @apiNote Class meant to deal with alignment, will eventually be implemented once we understand how to use encoders better 
  */
-public class Alignment{
+public class Alignment extends SubsystemBase {
     private boolean isAligned = false; 
     private DriveTrain mydrive = new DriveTrain();
     public Alignment(){
