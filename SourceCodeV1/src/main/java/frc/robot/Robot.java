@@ -127,16 +127,16 @@ public class Robot extends TimedRobot {
   public void driveSimplifiedXboxControl(boolean fieldRelative){
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    final var xSpeed = -m_controller.getY(GenericHID.Hand.kLeft) * DriveTrain.kMaxSpeed;
+    final var xSpeed = -m_controller.getRawAxis(4) * DriveTrain.kMaxSpeed;
      // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    final var ySpeed  = -m_controller.getX(GenericHID.Hand.kLeft) * DriveTrain.kMaxSpeed;
+    final var ySpeed  = -m_controller.getRawAxis(5) * DriveTrain.kMaxSpeed;
      // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default. 
-    final var rot = -m_controller.getX(GenericHID.Hand.kRight) * DriveTrain.kMaxAngularSpeed;
+    final var rot = m_controller.getRawAxis(3);
     simpDrive.simplifiedDrive(fieldRelative, xSpeed, ySpeed, rot);
 
   }
