@@ -15,10 +15,10 @@ public class SimplifiedMecanum{
     MecanumDrive drive;
 
     public SimplifiedMecanum(){
-        frontLeft = new VictorSP(Constants.DRIVEBASEMOTOR1_PWM);
-        frontRight = new VictorSP(Constants.DRIVEBASEMOTOR2_PWM);
-        backLeft = new VictorSP(Constants.DRIVEBASEMOTOR3_PWM);
-        backRight = new VictorSP(Constants.DRIVEBASEMOTOR4_PWM);
+        frontLeft = new VictorSP(Constants.FRONTLEFTMOTOR_PWM);
+        frontRight = new VictorSP(Constants.FRONTRIGHTMOTOR_PWM);
+        backLeft = new VictorSP(Constants.REARLEFTMOTOR_PWM);
+        backRight = new VictorSP(Constants.REARRIGHTMOTOR_PWM);
         drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
         
     }
