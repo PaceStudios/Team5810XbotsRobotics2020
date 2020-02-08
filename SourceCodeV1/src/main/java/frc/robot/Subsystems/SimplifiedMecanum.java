@@ -1,12 +1,15 @@
 package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj2.*;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import java.util.*;
 import frc.robot.Subsystems.Constants;
-public class SimplifiedMecanum extends SubsystemBase{
+/**
+ * @author John C. Pace
+ * @since 02/06/2020
+ * @version 02/08/20
+ * @apiNote Class dedicated to simpling getting the robot to strafe in all  4 directions. Currently does not contain any Encoder, nor autonomous mode.
+ */
+public class SimplifiedMecanum{
     VictorSP frontLeft;
     VictorSP frontRight;
     VictorSP backLeft;
@@ -15,6 +18,7 @@ public class SimplifiedMecanum extends SubsystemBase{
     double horiztonalSpeed = 0;
     double verticalSpeed = 0;
     MecanumDrive drive;
+    
 
     public SimplifiedMecanum(){
         frontLeft = new VictorSP(Constants.FRONTLEFTMOTOR_PWM);
@@ -32,5 +36,8 @@ public class SimplifiedMecanum extends SubsystemBase{
 
 
     }
+    public void getOdometry(){}
+    public void turn(double a){}
+    public void move(String direction, double powerInput){}
 
 }
