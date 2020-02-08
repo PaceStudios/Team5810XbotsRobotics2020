@@ -17,7 +17,7 @@ public final class Constants{
     public static final int BELTDRIVEMOTOR_PWM = 5;
     public static final int INTAKEMOTOR1_PWM = 6;
     public static final int INTAKEMOTOR2_PWM = 7;
-    public static final int EXTRAMOTOR1_PWM = 8;
+    public static final int CLIMBMOTOR_PWM = 8;
     public static final int EXTRAMOTOR2_PWM = 9;
 
     /* DiO and Analog Values Here:

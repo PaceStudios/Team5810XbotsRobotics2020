@@ -1,7 +1,5 @@
 package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.*;
-import frc.robot.Subsystems.Constants;
-import frc.robot.Subsystems.*;
 /**
  * @author John C. Pace
  * @since 01/19/2020
@@ -10,13 +8,13 @@ import frc.robot.Subsystems.*;
  * Going to use the 775 Pro Motors (Will use a maximum of 2 Motor Controllers)
  */
 
-public class Shooter {
+public class Shooter
+{
     private boolean alignmentReady = false;
     private Spark shooterMotors; // In reality, this object is 2 motors connected to ONE PWM Port with inverted wiring. 
     private Victor beltDriveMotor; // Motor dedicated
     private Servo serv1; // Dedicated to controlling the Pitch and CONNECTS to DIO PORT (Ground, Supply, and Signal);
     private boolean targetNotFound = true;
-    private Limelight lemonlight = new Limelight();
     /**
      * Constructor for the Shooter class
      */
@@ -25,10 +23,10 @@ public class Shooter {
          beltDriveMotor =new Victor(Constants.BELTDRIVEMOTOR_PWM);
          serv1 = new Servo(Constants.SERVO_MOTOR1_DIO);
     }
-    public void shootBalls(Joystick joy, int power_level){
+    public void shootBalls(Joystick joy, double powerInput){
         if(joy.getRawButton(1)){
-            beltDriveMotor.set(power_level);
-            shooterMotors.set(power_level);
+            beltDriveMotor.set(powerInput);
+            shooterMotors.set(powerInput);
         }
         else
         {

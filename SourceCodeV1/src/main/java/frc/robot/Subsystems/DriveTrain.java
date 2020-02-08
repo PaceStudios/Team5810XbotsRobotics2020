@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.Subsystems;
-
 import edu.wpi.first.wpilibj.AnalogGyro; // Requires connection to an Analog input 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
@@ -32,7 +31,7 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
  * 
  */
 @SuppressWarnings("PMD.TooManyFields")
-public class DriveTrain {
+public class DriveTrain{
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kHalfSpeed = 1.5; // 1.5 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
@@ -40,7 +39,7 @@ public class DriveTrain {
   private final SpeedController m_frontRightMotor = new PWMVictorSPX(Constants.FRONTLEFTMOTOR_PWM); // Motor 1
   private final SpeedController m_backLeftMotor = new PWMVictorSPX(Constants.FRONTRIGHTMOTOR_PWM); // Motor 2
   private final SpeedController m_backRightMotor = new PWMVictorSPX(Constants.REARLEFTMOTOR_PWM); // Motor 3
-  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(Constants.REARRIGHTMOTOR_PWM); // Motor 4
+  private final SpeedController m_frontLeftMotor = new PWMVictorSPX(Constants.REARLEFTMOTOR_PWM); // Motor 4
   
   
   /// DO NOT TOUCH THIS YET, IN PROCESS OF LEARNING

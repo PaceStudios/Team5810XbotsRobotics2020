@@ -7,13 +7,13 @@ import frc.robot.Subsystems.Constants;
  * @version 01/19/20
  * @apiNote Class meant to dealing with the potential motor systems. As of right now, the official intake remains unknown. 
  */
-public class Intake  
-
+public class Intake
 {
     // Motors can be changed according to what names they are.
     private boolean intakeEngaged = false;
     private Spark intake01;
     public Intake(){
+        intake01 = new Spark(Constants.INTAKEMOTOR1_PWM);
     }
     public Intake(int pwm1){
         intake01 = new Spark(pwm1);
@@ -31,7 +31,7 @@ public class Intake
         intakeEngaged = flag;
     }
     public void killAllMotors(){
-        intake01.set(Constants.DEAD_SPEED);
+        intake01.disable();
     }
     
 }

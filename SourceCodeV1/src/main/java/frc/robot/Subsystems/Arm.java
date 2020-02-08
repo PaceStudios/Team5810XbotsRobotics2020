@@ -2,11 +2,12 @@ package frc.robot.Subsystems;
 import java.util.*;
 import frc.robot.Subsystems.Constants;
 import edu.wpi.first.wpilibj.*;
+
 /**
  * @apiNote Class dedicated to potential Arm Movement for the DumbBot Robot
  * @author John C. Pace
  * @since 01/03/2020
- * @version 01/27/2020
+ * @version 02/08/2020
  */
 public class Arm{
     private Victor motor1;
