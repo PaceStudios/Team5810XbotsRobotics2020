@@ -6,9 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.Subsystems;
-import edu.wpi.first.wpilibj2.*;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import edu.wpi.first.wpilibj.AnalogGyro; // Requires connection to an Analog input 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
@@ -34,7 +31,7 @@ import edu.wpi.first.wpilibj.kinematics.MecanumDriveWheelSpeeds;
  * 
  */
 @SuppressWarnings("PMD.TooManyFields")
-public class DriveTrain extends SubsystemBase {
+public class DriveTrain{
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kHalfSpeed = 1.5; // 1.5 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second

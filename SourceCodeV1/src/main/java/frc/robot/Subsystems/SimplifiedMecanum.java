@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.AnalogGyro;
 
 import frc.robot.Subsystems.Constants;
 /**
@@ -18,6 +19,7 @@ public class SimplifiedMecanum{
     double horiztonalSpeed = 0;
     double verticalSpeed = 0;
     MecanumDrive drive;
+    AnalogGyro gyro;
     
 
     public SimplifiedMecanum(){
@@ -26,14 +28,15 @@ public class SimplifiedMecanum{
         backLeft = new VictorSP(Constants.REARLEFTMOTOR_PWM);
         backRight = new VictorSP(Constants.REARRIGHTMOTOR_PWM);
         drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
-        
+        gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
     }
     public void simplifiedDrive(boolean fieldRelative, double xSpeed, double ySpeed, double rot){
         turn = rot;
         horiztonalSpeed = xSpeed;
         verticalSpeed = ySpeed;
         drive.driveCartesian(xSpeed, ySpeed, rot);
-
+    }
+    public void moveExactDistance(double distance, String direction){
 
     }
     public void getOdometry(){}

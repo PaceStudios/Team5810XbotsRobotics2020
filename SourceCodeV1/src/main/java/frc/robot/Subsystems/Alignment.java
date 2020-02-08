@@ -1,19 +1,15 @@
 package frc.robot.Subsystems;
-import java.awt.*;
-import edu.wpi.first.wpilibj2.*;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-
 /**
  * @author John C. Pace
  * @since 01/19/2020
- * @version 01/20/2020
+ * @version 02/08/2020
  * @apiNote Class meant to deal with alignment, will eventually be implemented once we understand how to use encoders better 
  */
-public class Alignment extends SubsystemBase {
+public class Alignment{
     private boolean isAligned = false; 
-    private DriveTrain mydrive = new DriveTrain();
+    private SimplifiedMecanum mydrive;
     public Alignment(){
+        mydrive = new SimplifiedMecanum();
     }
     public void moveUp(double distance){
         mydrive.moveExactDistance(distance, Constants.MODE_UP);

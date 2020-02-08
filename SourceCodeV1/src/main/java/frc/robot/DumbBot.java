@@ -25,7 +25,6 @@ public class DumbBot extends TimedRobot
     private Victor r_motor = new Victor(Constants.dumbBotArcadeBaseMotorR_PWM);
     private XboxController x_1 = new XboxController(Constants.XBOXCONTROL_PORT);
     private Joystick joy1 = new Joystick(Constants.JOYSTICK_PORT);
-    private Intake intake = new Intake(Constants.DUMBBOT_ARCADEBOT_INTAKEMOTOR_PWM);
     private Arm arm = new Arm();
     private double armMovementSpeed = 0;
     private double botMovementSpeed = 0;

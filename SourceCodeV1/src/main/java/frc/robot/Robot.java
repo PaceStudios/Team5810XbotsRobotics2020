@@ -6,20 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
-
-import edu.wpi.first.networktables.NetworkTable;
 //import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.*;
-
-
 /**
  * @author John C. Pace
  * @since 01/06/2020
@@ -33,7 +23,11 @@ public class Robot extends TimedRobot {
   private XboxController m_controller;
   private Joystick m_joystick;
   private Timer timer01 = new Timer();
-  private boolean isAimOn;
+  //private boolean isAimOn;
+  private boolean isShooterActivated;
+  private boolean isClimberActivated;
+  //private boolean isAlignActivated;
+  private boolean intakeActivated;
   /**
    * Creates and instantiates all the Subsystems
    */
@@ -42,7 +36,7 @@ public class Robot extends TimedRobot {
   private Limelight limelight;
   private Shooter shoot;
   private Climber climb;
-  private Alignment align;
+  //private Alignment align;
   private SimplifiedMecanum simpDrive;
   /**
    * Double and Boolean Values
@@ -50,7 +44,9 @@ public class Robot extends TimedRobot {
   private double xSpeed = 0.0;
   private double ySpeed = 0.0;
   private double rot = 0.0;
-
+  private double intakeSpeed = 0;
+  private double climbSpeed = 0;
+  private double shootSpeed = 0;
   @Override
   public void robotInit(){
     super.robotInit();
@@ -58,12 +54,16 @@ public class Robot extends TimedRobot {
     m_controller = new XboxController(Constants.XBOXCONTROL_PORT);
     m_joystick = new Joystick(Constants.JOYSTICK_PORT);
     // Creates Subsystems and Activates Them in Teleop Periodic 
-    isAimOn = false;
+    //isAimOn = false;
+    isShooterActivated = false;
+    //isAlignActivated = false;
+    isClimberActivated = false;
+    intakeActivated = false;
     intake1 = new Intake();
     limelight = new Limelight();
     shoot = new Shooter();
     climb = new Climber();
-    align = new Alignment();
+    //align = new Alignment();
     simpDrive = new SimplifiedMecanum();
     }
   @Override
@@ -73,6 +73,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.setDefaultNumber("Horizontal Strafe Speed: ", xSpeed);
     SmartDashboard.setDefaultNumber("Vertical Strafe Speed: ", ySpeed);
     SmartDashboard.setDefaultNumber("Rotational Strafe Speed: ", rot);
+    SmartDashboard.setDefaultBoolean("Shooter Activation: ", isShooterActivated);
+    SmartDashboard.setDefaultBoolean("Intake Activation", intakeActivated);
+    SmartDashboard.setDefaultBoolean("Climb Activation:", isClimberActivated);
     limelight.updateLimeLight();
   }
   @Override
@@ -104,6 +107,33 @@ public class Robot extends TimedRobot {
     timer01.start();              // Starts the timer on the RoboRio
     //driveWithXboxControl(true);      // Sets the method for driving in TeleOp, was modified to work with an Xbox Controller 
     driveSimplifiedXboxControl(true); // activates simplified mecanum 
+    if(m_joystick.getRawButton(1)){
+      shootSpeed = 1;
+      isShooterActivated = true;
+    }
+    else{
+      shootSpeed = 0;
+      isShooterActivated = false;
+    }
+    if(m_joystick.getRawButton(2)){
+      intakeSpeed = 1;
+      intakeActivated= true;
+    }
+    else{
+      intakeSpeed = 0;
+      intakeActivated = false;
+    }
+    if(m_joystick.getRawButton(3)){
+      climbSpeed = 1;
+      isClimberActivated = true;
+    }
+    else {
+      climbSpeed = 0;
+      isClimberActivated = false;
+    }
+    intake1.intakeBalls(intakeSpeed);
+    climb.climb(climbSpeed);
+    shoot.shootBalls(m_joystick,shootSpeed);
   }
   @Override
   public void disabledInit(){
@@ -129,22 +159,22 @@ public class Robot extends TimedRobot {
   private void driveWithXboxControl(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    final var xSpeed = -m_controller.getY(GenericHID.Hand.kLeft) * DriveTrain.kMaxSpeed;
+    //final var xSpeed = -m_controller.getY(GenericHID.Hand.kLeft) * DriveTrain.kMaxSpeed;
 
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    final var ySpeed = -m_controller.getX(GenericHID.Hand.kLeft) * DriveTrain.kMaxSpeed;
+    //final var ySpeed = -m_controller.getX(GenericHID.Hand.kLeft) * DriveTrain.kMaxSpeed;
 
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    final var rot = -m_controller.getX(GenericHID.Hand.kRight) * DriveTrain.kMaxAngularSpeed;
+   // final var rot = -m_controller.getX(GenericHID.Hand.kRight) * DriveTrain.kMaxAngularSpeed;
 
     //m_mecanum.drive(xSpeed, ySpeed, rot, fieldRelative);
   }
-  public void driveSimplifiedXboxControl(boolean fieldRelative){
+  private void driveSimplifiedXboxControl(boolean fieldRelative){
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
     xSpeed = -m_controller.getRawAxis(4) * DriveTrain.kMaxSpeed;
@@ -162,11 +192,8 @@ public class Robot extends TimedRobot {
   }
 
 
-
+/*
   private void aimWithVision(NetworkTable a){
-    /*
-    Used to configure the Joystick to respond to moving towards the specified tx target
-    */
     float Kp = -0.1f;
     float min_command = 0.05f;
     //NetworkTable table = a.getTable("limelight");
@@ -192,4 +219,5 @@ public class Robot extends TimedRobot {
       align.setAlignment(false);
     }
   }
+  */
 }

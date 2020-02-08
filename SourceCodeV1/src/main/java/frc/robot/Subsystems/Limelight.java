@@ -3,15 +3,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.*;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * @author John C. Pace
  * @since 01/18/2020
  * @version 01/19/2020
  * @apiNote Class dedicated to creating the limelight, setting up the limelight and manipulating values for the limelight
  */
-public class Limelight extends SubsystemBase{
+public class Limelight{
     double validTargets_tv; //Whether the limelight has any valid targets (0 to 1)
     double horitzontaloffset_tx; //Horiztonal Offset From the Crosshair to Target (-27 to 27 Degrees)
     double verticaloffset_ty; // Vertical offset from Crosshair to Target (-20.5 degrees to 20.5)

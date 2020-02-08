@@ -1,6 +1,5 @@
 package frc.robot.Subsystems;
-import edu.wpi.first.wpilibj2.*;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.*;
 /**
  * @author John C. Pace
  * @since 01/19/2020
@@ -9,13 +8,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
     Which will probably involve multiple motors and motor groups working simultaneously. Still in the process of being determined.
  */
 
-public class Climber extends SubsystemBase{
+public class Climber{
     private String mode = "";
+    private VictorSP climbMotor; // Representing 2 Motors that will spin in tandem to each other. 
     public Climber(){
         mode = "Climbing Class";
+        climbMotor = new VictorSP(Constants.CLIMBMOTOR_PWM);
     }
     public String getMode(){
         return mode;
     }
-    public void killAllMotors(){}
+    public void killAllMotors(){
+        climbMotor.disable();
+    }
+    public void climb(double powerInput){
+        climbMotor.set(powerInput);
+    }
 }
