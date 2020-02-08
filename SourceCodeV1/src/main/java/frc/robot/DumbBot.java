@@ -21,7 +21,7 @@ import frc.robot.Subsystems.Constants;
 public class DumbBot extends TimedRobot
 {
     private final String mode;
-    private Victor l_motor = new Victor(Constants.dumbBotArcadeBaseMotorL_PWM);
+    //private Victor l_motor = new Victor(Constants.dumbBotArcadeBaseMotorL_PWM);
     private Victor r_motor = new Victor(Constants.dumbBotArcadeBaseMotorR_PWM);
     private XboxController x_1 = new XboxController(Constants.XBOXCONTROL_PORT);
     private Joystick joy1 = new Joystick(Constants.JOYSTICK_PORT);
@@ -83,7 +83,7 @@ public class DumbBot extends TimedRobot
         double turn = (x_1.getRawAxis(4) * 0.3);
         double left = speed + turn;
         double right = speed - turn;
-        l_motor.set(left);
+        //l_motor.set(left);
         r_motor.set(right);
 
         

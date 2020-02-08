@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
   private double intakeSpeed = 0;
   private double climbSpeed = 0;
   private double shootSpeed = 0;
+  public Robot(){
+  }
   @Override
   public void robotInit(){
     super.robotInit();
@@ -65,10 +67,10 @@ public class Robot extends TimedRobot {
     climb = new Climber();
     //align = new Alignment();
     simpDrive = new SimplifiedMecanum();
+    
     }
   @Override
   public void robotPeriodic() {
-    // TODO Auto-generated method stub
     super.robotPeriodic();
     SmartDashboard.setDefaultNumber("Horizontal Strafe Speed: ", xSpeed);
     SmartDashboard.setDefaultNumber("Vertical Strafe Speed: ", ySpeed);
@@ -174,21 +176,20 @@ public class Robot extends TimedRobot {
 
     //m_mecanum.drive(xSpeed, ySpeed, rot, fieldRelative);
   }
-  private void driveSimplifiedXboxControl(boolean fieldRelative){
+  public void driveSimplifiedXboxControl(boolean fieldRelative){
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    xSpeed = -m_controller.getRawAxis(4) * DriveTrain.kMaxSpeed;
+    xSpeed = m_controller.getRawAxis(4) * DriveTrain.kMaxSpeed;
      // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    ySpeed  = -m_controller.getRawAxis(5) * DriveTrain.kMaxSpeed;
+    ySpeed  =m_controller.getRawAxis(5) * DriveTrain.kMaxSpeed; 
      // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default. 
     rot = m_controller.getRawAxis(3);
-    simpDrive.simplifiedDrive(fieldRelative, xSpeed, ySpeed, rot);
-
+    simpDrive.simplifiedDrive(true, xSpeed, ySpeed, rot);
   }
 
 

@@ -9,10 +9,10 @@ public final class Constants{
     /*
     All Motor Values for Main Robot added here:
     */
-    public static final int FRONTLEFTMOTOR_PWM = 1;  
-    public static final int FRONTRIGHTMOTOR_PWM = 3;
-    public static final int REARLEFTMOTOR_PWM = 0;
-    public static final int REARRIGHTMOTOR_PWM = 2;
+    public static final int FRONTLEFTMOTOR_PWM = 0;  
+    public static final int FRONTRIGHTMOTOR_PWM = 1;
+    public static final int REARLEFTMOTOR_PWM = 2;
+    public static final int REARRIGHTMOTOR_PWM = 3;
     public static final int SHOOTERMOTERS_PWM = 4;
     public static final int BELTDRIVEMOTOR_PWM = 5;
     public static final int INTAKEMOTOR1_PWM = 6;
@@ -22,14 +22,13 @@ public final class Constants{
 
     /* DiO and Analog Values Here:
     */
-    public static final int SERVO_MOTOR1_DIO = 0;
-    public static final int GYRO_ANALOG_PORT = 0;
+  
 
     /*
     All Dumbot Values for Dumbot added here:
     */
 
-    public static final int dumbBotArcadeBaseMotorL_PWM = 0;
+    //public static final int dumbBotArcadeBaseMotorL_PWM = 0;
     public static final int dumbBotArcadeBaseMotorR_PWM = 1;
     public static final int DUMBBOT_ARCADEBOT_LIFT = 3;
     public static final int DUMBBOT_ARCADEBOT_WRIST = 2;

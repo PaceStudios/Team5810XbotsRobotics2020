@@ -13,7 +13,7 @@ public class Shooter
     private boolean alignmentReady = false;
     private Spark shooterMotors; // In reality, this object is 2 motors connected to ONE PWM Port with inverted wiring. 
     private Victor beltDriveMotor; // Motor dedicated
-    private Servo serv1; // Dedicated to controlling the Pitch and CONNECTS to DIO PORT (Ground, Supply, and Signal);
+ // Dedicated to controlling the Pitch and CONNECTS to DIO PORT (Ground, Supply, and Signal);
     private boolean targetNotFound = true;
     /**
      * Constructor for the Shooter class
@@ -21,7 +21,7 @@ public class Shooter
     public Shooter(){
          shooterMotors = new Spark(Constants.SHOOTERMOTERS_PWM);
          beltDriveMotor =new Victor(Constants.BELTDRIVEMOTOR_PWM);
-         serv1 = new Servo(Constants.SERVO_MOTOR1_DIO);
+         
     }
     public void shootBalls(Joystick joy, double powerInput){
         if(joy.getRawButton(1)){
@@ -40,10 +40,10 @@ public class Shooter
     public void swivel(){}
     public void findTarget(Limelight a, int power_level){
         if(targetNotFound){
-            serv1.set(power_level);
+           
         }
         else{
-            serv1.set(0);
+            
         }
     }
     /**
@@ -53,7 +53,7 @@ public class Shooter
     public void killAllMotors(){
         beltDriveMotor.set(0);
         shooterMotors.set(0);
-        serv1.set(0);
+        
     }
     /**
      * @apiNote Dedicated to checking Limelight values and returning correct values based off the limelight interpretation. 
