@@ -4,7 +4,6 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package frc.robot;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
@@ -18,7 +17,6 @@ import frc.robot.Subsystems.*;
  * for hosting all the different subsystems, I/O systems together in addition to
  * the different modes of the program 
  */
-
 public class Robot extends TimedRobot {
   private XboxController m_controller;
   private Joystick m_joystick;
@@ -68,7 +66,6 @@ public class Robot extends TimedRobot {
     }
   @Override
   public void robotPeriodic() {
-    // TODO Auto-generated method stub
     super.robotPeriodic();
     SmartDashboard.setDefaultNumber("Horizontal Strafe Speed: ", xSpeed);
     SmartDashboard.setDefaultNumber("Vertical Strafe Speed: ", ySpeed);
@@ -80,26 +77,20 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void autonomousInit() {
-    
     super.autonomousInit();
     driveWithXboxControl(false);
     timer01.reset();
   }
-  
-
   @Override
   public void autonomousPeriodic() {
     timer01.reset();
     timer01.start();
-    driveWithXboxControl(false);
-    //m_mecanum.updateOdometry();
-    
+    driveSimplifiedXboxControl(false);
+    //m_mecanum.updateOdometry();  
   }
   @Override
-  public void teleopInit() {
-    
+  public void teleopInit() {  
     super.teleopInit();
-
   }
   @Override
   public void teleopPeriodic() {
@@ -142,6 +133,7 @@ public class Robot extends TimedRobot {
     climb.killAllMotors();
     //m_mecanum.killAllMotors();
     shoot.killAllMotors();
+    simpDrive.killAllMotors();
   }
   @Override
   public void disabledPeriodic(){
@@ -155,7 +147,6 @@ public class Robot extends TimedRobot {
   public void testPeriodic(){
     super.testPeriodic();
   }
-
   private void driveWithXboxControl(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
@@ -177,21 +168,19 @@ public class Robot extends TimedRobot {
   private void driveSimplifiedXboxControl(boolean fieldRelative){
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    xSpeed = -m_controller.getRawAxis(4) * DriveTrain.kMaxSpeed;
+    xSpeed = (-m_controller.getRawAxis(3)) * Constants.HALF_SPEED; //Inverted to make the RT positive and the LT negative 
      // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    ySpeed  = -m_controller.getRawAxis(5) * DriveTrain.kMaxSpeed;
+    ySpeed  = m_controller.getRawAxis(1) * Constants.HALF_SPEED;
      // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default. 
-    rot = m_controller.getRawAxis(3);
+    rot = m_controller.getRawAxis(4) * Constants.HALF_SPEED;
     simpDrive.simplifiedDrive(fieldRelative, xSpeed, ySpeed, rot);
 
   }
-
-
 /*
   private void aimWithVision(NetworkTable a){
     float Kp = -0.1f;

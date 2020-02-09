@@ -2,7 +2,6 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
-
 import frc.robot.Subsystems.Constants;
 /**
  * @author John C. Pace
@@ -20,7 +19,7 @@ public class SimplifiedMecanum{
     double verticalSpeed = 0;
     MecanumDrive drive;
     AnalogGyro gyro;
-    
+    AnalogAccelerometer accel;
 
     public SimplifiedMecanum(){
         frontLeft = new VictorSP(Constants.FRONTLEFTMOTOR_PWM);
@@ -28,7 +27,8 @@ public class SimplifiedMecanum{
         backLeft = new VictorSP(Constants.REARLEFTMOTOR_PWM);
         backRight = new VictorSP(Constants.REARRIGHTMOTOR_PWM);
         drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
-        gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
+        //gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
+        //accel = new AnalogAccelerometer(0);
     }
     public void simplifiedDrive(boolean fieldRelative, double xSpeed, double ySpeed, double rot){
         turn = rot;
@@ -42,5 +42,10 @@ public class SimplifiedMecanum{
     public void getOdometry(){}
     public void turn(double a){}
     public void move(String direction, double powerInput){}
-
+    public void killAllMotors(){
+        frontLeft.disable();
+        frontRight.disable();
+        backLeft.disable();
+        backRight.disable();
+    }
 }

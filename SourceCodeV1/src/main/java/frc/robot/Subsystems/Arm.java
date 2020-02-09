@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.*;
  * @apiNote Class dedicated to potential Arm Movement for the DumbBot Robot
  * @author John C. Pace
  * @since 01/03/2020
- * @version 02/08/2020
+ * @version 02/09/2020
  */
 public class Arm{
     private Victor motor1;
@@ -22,7 +22,7 @@ public class Arm{
     }
     public void killAllMotors(){
         for(int i = 0; i < armMotors.size(); i ++){
-            armMotors.get(i).set(0);
+            armMotors.get(i).disable();
         }
     }
     public void liftArm(Joystick joy, double power_total){
