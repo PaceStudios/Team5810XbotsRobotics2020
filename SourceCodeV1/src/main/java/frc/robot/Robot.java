@@ -12,7 +12,7 @@ import frc.robot.Subsystems.*;
 /**
  * @author John C. Pace
  * @since 01/06/2020
- * @version 02/08/2020
+ * @version 02/13/2020
  * @apiNote This class is the central hub to the program, resposible 
  * for hosting all the different subsystems, I/O systems together in addition to
  * the different modes of the program 
@@ -167,8 +167,8 @@ public class Robot extends TimedRobot {
   }
   private void driveSimplifiedXboxControl(boolean fieldRelative){
     // Get the x speed. We are inverting this because Xbox controllers return
-    // negative values when we push forward.
-    xSpeed = (-m_controller.getRawAxis(3)) * Constants.HALF_SPEED; //Inverted to make the RT positive and the LT negative 
+    // negative values when we push forward. 
+    xSpeed = (m_controller.getRawAxis(3) + (-m_controller.getRawAxis(2))) * Constants.HALF_SPEED;
      // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.

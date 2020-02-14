@@ -6,7 +6,7 @@ import frc.robot.Subsystems.Constants;
 /**
  * @author John C. Pace
  * @since 02/06/2020
- * @version 02/08/20
+ * @version 02/13/20[Finished]
  * @apiNote Class dedicated to simpling getting the robot to strafe in all  4 directions. Currently does not contain any Encoder, nor autonomous mode.
  */
 public class SimplifiedMecanum{
