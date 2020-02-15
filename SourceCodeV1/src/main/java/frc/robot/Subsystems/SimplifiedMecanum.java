@@ -6,7 +6,7 @@ import frc.robot.Subsystems.Constants;
 /**
  * @author John C. Pace
  * @since 02/06/2020
- * @version 02/13/20[Finished]
+ * @version 02/15/2020
  * @apiNote Class dedicated to simpling getting the robot to strafe in all  4 directions. Currently does not contain any Encoder, nor autonomous mode.
  */
 public class SimplifiedMecanum{
@@ -20,6 +20,7 @@ public class SimplifiedMecanum{
     MecanumDrive drive;
     AnalogGyro gyro;
     AnalogAccelerometer accel;
+    
 
     public SimplifiedMecanum(){
         frontLeft = new VictorSP(Constants.FRONTLEFTMOTOR_PWM);
@@ -27,7 +28,7 @@ public class SimplifiedMecanum{
         backLeft = new VictorSP(Constants.REARLEFTMOTOR_PWM);
         backRight = new VictorSP(Constants.REARRIGHTMOTOR_PWM);
         drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
-        //gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
+        gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
         //accel = new AnalogAccelerometer(0);
     }
     public void simplifiedDrive(boolean fieldRelative, double xSpeed, double ySpeed, double rot){
@@ -47,5 +48,33 @@ public class SimplifiedMecanum{
         frontRight.disable();
         backLeft.disable();
         backRight.disable();
+    }
+    /**
+     * Using an ultrasonic sensor, the robot will drive forward until it is within 5 feet of another object. 
+     */
+    public void driveUntilWall(){}
+    /**
+     * Using encoders on all 4 mecanum wheels, the robot will only keep track of (vertical y distance)
+     * This method will only keep track of forward and backward distance
+     * @param distance
+     */
+    public void drive(double distance){}
+    public void turnLeft(){
+        double startAngle = gyro.getAngle();
+        while((gyro.getAngle() - startAngle) > -90){
+            frontRight.set(Constants.HALF_SPEED);
+            frontLeft.set(Constants.REVERSE_HALF_SPEED);
+            backLeft.set(Constants.HALF_SPEED);
+            backRight.set(Constants.REVERSE_HALF_SPEED);
+        } 
+    }
+    public void turnRight(){
+        double startAngle = gyro.getAngle();
+        while((gyro.getAngle()-startAngle)< 90){
+            frontRight.set(Constants.REVERSE_HALF_SPEED);
+            frontLeft.set(Constants.HALF_SPEED);
+            backLeft.set(Constants.REVERSE_HALF_SPEED);
+            backRight.set(Constants.HALF_SPEED);
+        }
     }
 }

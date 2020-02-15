@@ -12,7 +12,7 @@ import frc.robot.Subsystems.*;
 /**
  * @author John C. Pace
  * @since 01/06/2020
- * @version 02/13/2020
+ * @version 02/15/2020
  * @apiNote This class is the central hub to the program, resposible 
  * for hosting all the different subsystems, I/O systems together in addition to
  * the different modes of the program 
@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
   private double intakeSpeed = 0;
   private double climbSpeed = 0;
   private double shootSpeed = 0;
+  private String autoSelection;
   @Override
   public void robotInit(){
     super.robotInit();
@@ -63,6 +64,7 @@ public class Robot extends TimedRobot {
     climb = new Climber();
     //align = new Alignment();
     simpDrive = new SimplifiedMecanum();
+    autoSelection = new String("");
     }
   @Override
   public void robotPeriodic() {
@@ -80,12 +82,26 @@ public class Robot extends TimedRobot {
     super.autonomousInit();
     driveWithXboxControl(false);
     timer01.reset();
+    if(m_controller.getAButton()){autoSelection = "A";}
+    else if(m_controller.getBButton()){autoSelection = "B";}
+    else if(m_controller.getYButton()){autoSelection = "Y";}
+    else {autoSelection = "X";}
   }
   @Override
   public void autonomousPeriodic() {
     timer01.reset();
     timer01.start();
     driveSimplifiedXboxControl(false);
+    switch(autoSelection){
+      case("A"):
+        auto1();
+      case("B"):
+        auto2();
+      case("Y"):
+        auto3();
+      case("X"):
+        auto4();
+    }
     //m_mecanum.updateOdometry();  
   }
   @Override
@@ -147,6 +163,10 @@ public class Robot extends TimedRobot {
   public void testPeriodic(){
     super.testPeriodic();
   }
+  /**
+   * This method deals with driving for the advance mecanum drive train. As of this point, we are not using it. 
+   * @param fieldRelative
+   */
   private void driveWithXboxControl(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
@@ -165,6 +185,10 @@ public class Robot extends TimedRobot {
 
     //m_mecanum.drive(xSpeed, ySpeed, rot, fieldRelative);
   }
+  /**
+   * This method deals with driving in (GTA style of driving for the simplified mecanum drive base)
+   * @param fieldRelative
+   */
   private void driveSimplifiedXboxControl(boolean fieldRelative){
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward. 
@@ -181,6 +205,13 @@ public class Robot extends TimedRobot {
     simpDrive.simplifiedDrive(fieldRelative, xSpeed, ySpeed, rot);
 
   }
+  /**
+   * This version of autonomous is dedicated to essentially making the robot into a Roomba. It will move forward until it cannot move forward anymore, check its surroundings and turn as needed.
+   */
+  private void auto1(){}
+  private void auto2(){}
+  private void auto3(){}
+  private void auto4(){}
 /*
   private void aimWithVision(NetworkTable a){
     float Kp = -0.1f;

@@ -23,6 +23,7 @@ public final class Constants{
     /**
      * Analog and DiO ports go here. For now, nothing will be here until future notice. 
      */
+    public static final int GYRO_ANALOG_PORT = 2;
     
 
     /*
