@@ -24,6 +24,13 @@ public final class Constants{
      * Analog and DiO ports go here. For now, nothing will be here until future notice. 
      */
     public static final int GYRO_ANALOG_PORT = 2;
+
+    /**
+     * Encoder Calculation Values go here:
+     */
+    public static final double kPulsesPerRevolution = 20; // According to the CIM Motor Encoder Coder from AndyMark (Might be 2000 or 20)
+    public static final double kDistancePerRevolution = 25.13; // Circumference calculated with 8" Diameter Mecanum Wheels.
+    public static final double kDistancePerPulse = kDistancePerRevolution / kPulsesPerRevolution;
     
 
     /*

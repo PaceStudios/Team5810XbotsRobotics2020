@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
   private boolean isClimberActivated;
   //private boolean isAlignActivated;
   private boolean intakeActivated;
+  
   /**
    * Creates and instantiates all the Subsystems
    */
@@ -65,6 +66,7 @@ public class Robot extends TimedRobot {
     //align = new Alignment();
     simpDrive = new SimplifiedMecanum();
     autoSelection = new String("");
+    simpDrive.setUpEncoders();
     }
   @Override
   public void robotPeriodic() {
@@ -75,6 +77,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.setDefaultBoolean("Shooter Activation: ", isShooterActivated);
     SmartDashboard.setDefaultBoolean("Intake Activation", intakeActivated);
     SmartDashboard.setDefaultBoolean("Climb Activation:", isClimberActivated);
+    
     limelight.updateLimeLight();
   }
   @Override

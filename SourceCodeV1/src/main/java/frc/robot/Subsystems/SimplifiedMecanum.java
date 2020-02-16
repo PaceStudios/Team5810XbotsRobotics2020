@@ -2,6 +2,7 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import frc.robot.Subsystems.Constants;
 /**
  * @author John C. Pace
@@ -14,12 +15,17 @@ public class SimplifiedMecanum{
     VictorSP frontRight;
     VictorSP backLeft;
     VictorSP backRight;
+    Encoder frontLeftEncoder;
+    Encoder frontRightEncoder;
+    Encoder backLeftEncoder;
+    Encoder backRightEncoder;
     double turn = 0;
     double horiztonalSpeed = 0;
     double verticalSpeed = 0;
     MecanumDrive drive;
     AnalogGyro gyro;
     AnalogAccelerometer accel;
+    
     
 
     public SimplifiedMecanum(){
@@ -29,7 +35,20 @@ public class SimplifiedMecanum{
         backRight = new VictorSP(Constants.REARRIGHTMOTOR_PWM);
         drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
         gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
+        gyro.reset();
+        frontLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
+        frontRightEncoder = new Encoder(2, 3, true, EncodingType.k4X);
+        backLeftEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+        backRightEncoder = new Encoder(6, 7, true, EncodingType.k4X);
         //accel = new AnalogAccelerometer(0);
+
+    }
+    public void setUpEncoders(){
+        frontLeftEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
+        backLeftEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
+        frontRightEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
+        backLeftEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
+        resetEncoders();
     }
     public void simplifiedDrive(boolean fieldRelative, double xSpeed, double ySpeed, double rot){
         turn = rot;
@@ -37,10 +56,9 @@ public class SimplifiedMecanum{
         verticalSpeed = ySpeed;
         drive.driveCartesian(xSpeed, ySpeed, rot);
     }
-    public void moveExactDistance(double distance, String direction){
-
+    public void getOdometry(){
+        gyro.getAngle();
     }
-    public void getOdometry(){}
     public void turn(double a){}
     public void move(String direction, double powerInput){}
     public void killAllMotors(){
@@ -58,7 +76,20 @@ public class SimplifiedMecanum{
      * This method will only keep track of forward and backward distance
      * @param distance
      */
-    public void drive(double distance){}
+    public void drive(double distance){
+        resetEncoders();
+        if (distance > 0){
+        while(getAverageEncoderPosition() < distance){
+            simplifiedDrive(true, Constants.SEMI_SPEED, 0, 0);
+        }
+        }
+        else if(distance < 0){
+            while(getAverageEncoderPosition() > distance){
+                simplifiedDrive(true, -Constants.SEMI_SPEED, 0, 0);
+            }
+        }
+        simplifiedDrive(true, 0, 0, 0);
+    }
     public void turnLeft(){
         double startAngle = gyro.getAngle();
         while((gyro.getAngle() - startAngle) > -90){
@@ -76,5 +107,14 @@ public class SimplifiedMecanum{
             backLeft.set(Constants.REVERSE_HALF_SPEED);
             backRight.set(Constants.HALF_SPEED);
         }
+    }
+    public void resetEncoders(){
+        frontLeftEncoder.reset();
+        backLeftEncoder.reset();
+        frontRightEncoder.reset();
+        backRightEncoder.reset();
+    }
+    public double getAverageEncoderPosition(){
+        return ((frontLeftEncoder.getDistance()+frontRightEncoder.getDistance()+backLeftEncoder.getDistance()+backRightEncoder.getDistance())/4);
     }
 }
