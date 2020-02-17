@@ -31,6 +31,18 @@ public final class Constants{
     public static final double kPulsesPerRevolution = 20; // According to the CIM Motor Encoder Coder from AndyMark (Might be 2000 or 20)
     public static final double kDistancePerRevolution = 25.13; // Circumference calculated with 8" Diameter Mecanum Wheels.
     public static final double kDistancePerPulse = kDistancePerRevolution / kPulsesPerRevolution;
+    /**
+     * Encoder Channel Values go here:
+     */
+    public static final int ENCODER_CHANNEL_CHANNEL1 = 0;
+    public static final int ENCODER_CHANNEL_CHANNEL2 = 1;
+    public static final int ENCODER_CHANNEL_CHANNEL3 = 2;
+    public static final int ENCODER_CHANNEL_CHANNEL4 = 3;
+    public static final int ENCODER_CHANNEL_CHANNEL5 = 4;
+    public static final int ENCODER_CHANNEL_CHANNEL6 = 5;
+    public static final int ENCODER_CHANNEL_CHANNEL7 = 6;
+    public static final int ENCODER_CHANNEL_CHANNEL8 = 7;
+    
     
 
     /*

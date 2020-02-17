@@ -36,10 +36,10 @@ public class SimplifiedMecanum{
         drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
         gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
         gyro.reset();
-        frontLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
-        frontRightEncoder = new Encoder(2, 3, true, EncodingType.k4X);
-        backLeftEncoder = new Encoder(4, 5, false, EncodingType.k4X);
-        backRightEncoder = new Encoder(6, 7, true, EncodingType.k4X);
+        frontLeftEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL1, Constants.ENCODER_CHANNEL_CHANNEL2, false, EncodingType.k4X);
+        frontRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL3, Constants.ENCODER_CHANNEL_CHANNEL4, true, EncodingType.k4X);
+        backLeftEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL5, Constants.ENCODER_CHANNEL_CHANNEL6, false, EncodingType.k4X);
+        backRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL7, Constants.ENCODER_CHANNEL_CHANNEL8, true, EncodingType.k4X);
         //accel = new AnalogAccelerometer(0);
 
     }
@@ -59,8 +59,6 @@ public class SimplifiedMecanum{
     public void getOdometry(){
         gyro.getAngle();
     }
-    public void turn(double a){}
-    public void move(String direction, double powerInput){}
     public void killAllMotors(){
         frontLeft.disable();
         frontRight.disable();
@@ -134,7 +132,19 @@ public class SimplifiedMecanum{
         }
         simplifiedDrive(true, 0, 0, 0);
     }
-    public void auto1(){}
+    /**
+     * makes the robot drive in a 10x10 sqaure
+     */
+    public void auto1(){
+        drive(10);
+        turnLeft();
+        drive(10);
+        turnLeft();
+        drive(10);
+        turnLeft();
+        drive(10);
+        turnLeft();
+    }
     public void auto2(){}
     public void auto3(){}
     public void auto4(){}
