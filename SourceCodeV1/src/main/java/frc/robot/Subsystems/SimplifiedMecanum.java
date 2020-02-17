@@ -117,4 +117,21 @@ public class SimplifiedMecanum{
     public double getAverageEncoderPosition(){
         return ((frontLeftEncoder.getDistance()+frontRightEncoder.getDistance()+backLeftEncoder.getDistance()+backRightEncoder.getDistance())/4);
     }
+    public double getEncoderPosition(Encoder a, Encoder b){
+        return ((a.getDistance() + b.getDistance())/2);
+    }
+    public void strafeLeft(double distance){
+        resetEncoders();
+        while(getEncoderPosition(backLeftEncoder, frontRightEncoder)< distance){
+            simplifiedDrive(true, -Constants.SEMI_SPEED, 0, 0);
+        }
+        simplifiedDrive(true, 0, 0, 0);
+    }
+    public void strafeRight(double distance){
+        resetEncoders();
+        while(getEncoderPosition(frontLeftEncoder, backRightEncoder)<distance){
+            simplifiedDrive(true, Constants.SEMI_SPEED, 0, 0);
+        }
+        simplifiedDrive(true, 0, 0, 0);
+    }
 }
