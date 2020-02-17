@@ -97,13 +97,13 @@ public class Robot extends TimedRobot {
     driveSimplifiedXboxControl(false);
     switch(autoSelection){
       case("A"):
-        auto1();
+        simpDrive.auto1();
       case("B"):
-        auto2();
+        simpDrive.auto2();
       case("Y"):
-        auto3();
+        simpDrive.auto3();
       case("X"):
-        auto4();
+        simpDrive.auto4();
     }
     //m_mecanum.updateOdometry();  
   }
@@ -211,10 +211,6 @@ public class Robot extends TimedRobot {
   /**
    * This version of autonomous is dedicated to essentially making the robot into a Roomba. It will move forward until it cannot move forward anymore, check its surroundings and turn as needed.
    */
-  private void auto1(){}
-  private void auto2(){}
-  private void auto3(){}
-  private void auto4(){}
 /*
   private void aimWithVision(NetworkTable a){
     float Kp = -0.1f;
