@@ -1,5 +1,5 @@
 package frc.robot.Subsystems;
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.Subsystems.Constants;
 /**
  * @author John C. Pace
@@ -11,12 +11,12 @@ public class Intake
 {
     // Motors can be changed according to what names they are.
     private boolean intakeEngaged = false;
-    private Spark intake01;
+    private VictorSP intake01;
     public Intake(){
-        intake01 = new Spark(Constants.INTAKEMOTOR1_PWM);
+        intake01 = new VictorSP(Constants.INTAKEMOTOR1_PWM);
     }
     public Intake(int pwm1){
-        intake01 = new Spark(pwm1);
+        intake01 = new VictorSP(pwm1);
     }
     public void intakeBalls(double speed){
         intake01.set(-speed);
