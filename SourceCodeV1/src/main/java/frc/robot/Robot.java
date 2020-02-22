@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.setDefaultBoolean("Climb Activation:", isClimberActivated);
     
     limelight.updateLimeLight();
+    simpDrive.updateEncoderValues();
   }
   @Override
   public void autonomousInit() {

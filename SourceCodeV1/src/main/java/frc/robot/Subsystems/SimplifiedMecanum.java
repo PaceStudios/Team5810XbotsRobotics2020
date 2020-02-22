@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Constants;
 /**
  * @author John C. Pace
@@ -25,8 +26,10 @@ public class SimplifiedMecanum{
     MecanumDrive drive;
     AnalogGyro gyro;
     AnalogAccelerometer accel;
-    
-    
+    private double frontLeftEncoderRate;
+    private double backLeftEncoderRate;
+    private double frontRightEncoderRate;
+    private double backRightEncoderRate;
 
     public SimplifiedMecanum(){
         frontLeft = new VictorSP(Constants.FRONTLEFTMOTOR_PWM);
@@ -40,8 +43,11 @@ public class SimplifiedMecanum{
         frontRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL3, Constants.ENCODER_CHANNEL_CHANNEL4, true, EncodingType.k4X);
         backLeftEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL5, Constants.ENCODER_CHANNEL_CHANNEL6, false, EncodingType.k4X);
         backRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL7, Constants.ENCODER_CHANNEL_CHANNEL8, true, EncodingType.k4X);
+        frontLeftEncoderRate =0;
+        backLeftEncoderRate = 0;
+        frontRightEncoderRate = 0;
+        backRightEncoderRate = 0;
         //accel = new AnalogAccelerometer(0);
-
     }
     public void setUpEncoders(){
         frontLeftEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
@@ -54,6 +60,7 @@ public class SimplifiedMecanum{
         turn = rot;
         horiztonalSpeed = xSpeed;
         verticalSpeed = ySpeed;
+        setUpEncoders();
         drive.driveCartesian(xSpeed, ySpeed, rot);
     }
     public void getOdometry(){
@@ -131,6 +138,12 @@ public class SimplifiedMecanum{
             simplifiedDrive(true, Constants.SEMI_SPEED, 0, 0);
         }
         simplifiedDrive(true, 0, 0, 0);
+    }
+    public void updateEncoderValues(){
+        SmartDashboard.putNumber("Front Left Rate: ", frontLeftEncoder.getRate());
+        SmartDashboard.putNumber("Back Left Rate: ", backLeftEncoder.getRate());
+        SmartDashboard.putNumber("Front Right Rate", frontRightEncoder.getRate());
+        SmartDashboard.putNumber("Back Right Rate", backRightEncoder.getRate());
     }
     /**
      * makes the robot drive in a 10x10 sqaure
