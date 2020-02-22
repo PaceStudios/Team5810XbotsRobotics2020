@@ -7,12 +7,13 @@
 package frc.robot;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.*;
 /**
  * @author John C. Pace
  * @since 01/06/2020
- * @version 02/15/2020
+ * @version 02/22/2020
  * @apiNote This class is the central hub to the program, resposible 
  * for hosting all the different subsystems, I/O systems together in addition to
  * the different modes of the program 
@@ -37,6 +38,8 @@ public class Robot extends TimedRobot {
   private Climber climb;
   //private Alignment align;
   private SimplifiedMecanum simpDrive;
+  private VictorSP testMotor;
+  private Encoder testEncoder;
   /**
    * Double and Boolean Values
    */
@@ -80,6 +83,7 @@ public class Robot extends TimedRobot {
     
     limelight.updateLimeLight();
     simpDrive.updateEncoderValues();
+    SmartDashboard.setDefaultNumber("Test Encoder Rate", testEncoder.getRate());
   }
   @Override
   public void autonomousInit() {
@@ -154,6 +158,7 @@ public class Robot extends TimedRobot {
     //m_mecanum.killAllMotors();
     shoot.killAllMotors();
     simpDrive.killAllMotors();
+    testMotor.disable();
   }
   @Override
   public void disabledPeriodic(){
@@ -162,10 +167,20 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit(){
     super.testInit();
-  }
+    testMotor = new VictorSP(9);
+    testEncoder = new Encoder(0, 1,false,EncodingType.k4X);
+    }
+  
   @Override
   public void testPeriodic(){
     super.testPeriodic();
+    if(m_controller.getAButton()){
+      xSpeed = 1;
+    }
+    else{
+      xSpeed = 0;
+    }
+    testMotor.set(xSpeed);
   }
   /**
    * This method deals with driving for the advance mecanum drive train. As of this point, we are not using it. 

@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Subsystems.Constants;
 /**
  * @author John C. Pace
  * @since 02/06/2020
@@ -40,9 +39,9 @@ public class SimplifiedMecanum{
         gyro = new AnalogGyro(Constants.GYRO_ANALOG_PORT);
         gyro.reset();
         frontLeftEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL1, Constants.ENCODER_CHANNEL_CHANNEL2, false, EncodingType.k4X);
-        frontRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL3, Constants.ENCODER_CHANNEL_CHANNEL4, true, EncodingType.k4X);
+        frontRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL3, Constants.ENCODER_CHANNEL_CHANNEL4, false, EncodingType.k4X);
         backLeftEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL5, Constants.ENCODER_CHANNEL_CHANNEL6, false, EncodingType.k4X);
-        backRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL7, Constants.ENCODER_CHANNEL_CHANNEL8, true, EncodingType.k4X);
+        backRightEncoder = new Encoder(Constants.ENCODER_CHANNEL_CHANNEL7, Constants.ENCODER_CHANNEL_CHANNEL8, false, EncodingType.k4X);
         frontLeftEncoderRate =0;
         backLeftEncoderRate = 0;
         frontRightEncoderRate = 0;
@@ -85,12 +84,12 @@ public class SimplifiedMecanum{
         resetEncoders();
         if (distance > 0){
         while(getAverageEncoderPosition() < distance){
-            simplifiedDrive(true, Constants.SEMI_SPEED, 0, 0);
+            simplifiedDrive(true, 0,Constants.SEMI_SPEED,0); // (boolean, xSpeed, ySpeed, rot)
         }
         }
         else if(distance < 0){
             while(getAverageEncoderPosition() > distance){
-                simplifiedDrive(true, -Constants.SEMI_SPEED, 0, 0);
+                simplifiedDrive(true,0,-Constants.SEMI_SPEED,0);
             }
         }
         simplifiedDrive(true, 0, 0, 0);
@@ -125,30 +124,49 @@ public class SimplifiedMecanum{
     public double getEncoderPosition(Encoder a, Encoder b){
         return ((a.getDistance() + b.getDistance())/2);
     }
-    public void strafeLeft(double distance){
+    public void strafe(double distance){
         resetEncoders();
-        while(getEncoderPosition(backLeftEncoder, frontRightEncoder)< distance){
-            simplifiedDrive(true, -Constants.SEMI_SPEED, 0, 0);
-        }
-        simplifiedDrive(true, 0, 0, 0);
-    }
-    public void strafeRight(double distance){
-        resetEncoders();
-        while(getEncoderPosition(frontLeftEncoder, backRightEncoder)<distance){
-            simplifiedDrive(true, Constants.SEMI_SPEED, 0, 0);
-        }
-        simplifiedDrive(true, 0, 0, 0);
+
+        if (distance > 0){
+            frontRightEncoder.setReverseDirection(true);
+            backLeftEncoder.setReverseDirection(true);
+            frontLeftEncoder.setReverseDirection(false);
+            backRightEncoder.setReverseDirection(false);
+            while(getAverageEncoderPosition() < distance){
+                simplifiedDrive(true, Constants.SEMI_SPEED, 0, 0);
+            }
+            }
+            else if(distance < 0){
+                frontRightEncoder.setReverseDirection(false);
+                backLeftEncoder.setReverseDirection(false);
+                frontLeftEncoder.setReverseDirection(true);
+                backRightEncoder.setReverseDirection(true);
+                while(getAverageEncoderPosition() > distance){
+                    simplifiedDrive(true, -Constants.SEMI_SPEED, 0, 0);
+                }
+            }
+            simplifiedDrive(true, 0, 0, 0);
+            frontRightEncoder.setReverseDirection(false);
+            backLeftEncoder.setReverseDirection(false);
+            frontLeftEncoder.setReverseDirection(false);
+            backRightEncoder.setReverseDirection(false);
     }
     public void updateEncoderValues(){
-        SmartDashboard.putNumber("Front Left Rate: ", frontLeftEncoder.getRate());
-        SmartDashboard.putNumber("Back Left Rate: ", backLeftEncoder.getRate());
-        SmartDashboard.putNumber("Front Right Rate", frontRightEncoder.getRate());
-        SmartDashboard.putNumber("Back Right Rate", backRightEncoder.getRate());
+        frontLeftEncoderRate = frontLeftEncoder.getRate();
+        frontRightEncoderRate = frontRightEncoder.getRate();
+        backLeftEncoderRate = backLeftEncoder.getRate();
+        backRightEncoderRate = backRightEncoder.getRate();
+        SmartDashboard.putNumber("Front Left Rate: ", frontLeftEncoderRate);
+        SmartDashboard.putNumber("Back Left Rate: ", backLeftEncoderRate);
+        SmartDashboard.putNumber("Front Right Rate", frontRightEncoderRate);
+        SmartDashboard.putNumber("Back Right Rate", backRightEncoderRate);
     }
     /**
      * makes the robot drive in a 10x10 sqaure
      */
     public void auto1(){
+        /*
+        */
         drive(10);
         turnLeft();
         drive(10);
