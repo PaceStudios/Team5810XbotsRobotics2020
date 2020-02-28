@@ -74,7 +74,7 @@ public class TesterBot extends TimedRobot{
         super.robotPeriodic();
         SmartDashboard.putString("Mode:", mode);
         SmartDashboard.putBoolean("A Button Pressed", aPressed);
-        SmartDashboard.setDefaultNumber("Distance:", encoder1.getDistance());
+        SmartDashboard.putString("DB/String 1", "Test Encoder" + encoder1.getRate());
         
     }
         
