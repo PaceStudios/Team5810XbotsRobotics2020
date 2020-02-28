@@ -7,12 +7,13 @@
 package frc.robot;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.*;
 /**
  * @author John C. Pace
  * @since 01/06/2020
- * @version 02/08/2020
+ * @version 02/22/2020
  * @apiNote This class is the central hub to the program, resposible 
  * for hosting all the different subsystems, I/O systems together in addition to
  * the different modes of the program 
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
   private boolean isClimberActivated;
   //private boolean isAlignActivated;
   private boolean intakeActivated;
+  private Timer time = new Timer();  
   /**
    * Creates and instantiates all the Subsystems
    */
@@ -40,11 +42,16 @@ public class Robot extends TimedRobot {
    * Double and Boolean Values
    */
   private double xSpeed = 0.0;
+  private double encoderRate = 0.0;
   private double ySpeed = 0.0;
   private double rot = 0.0;
   private double intakeSpeed = 0;
   private double climbSpeed = 0;
   private double shootSpeed = 0;
+  private String autoSelection;
+  private boolean isXButtonPressed;
+  private double extension;
+  private boolean yButtonPressed;
   @Override
   public void robotInit(){
     super.robotInit();
@@ -63,29 +70,44 @@ public class Robot extends TimedRobot {
     climb = new Climber();
     //align = new Alignment();
     simpDrive = new SimplifiedMecanum();
-    }
+    autoSelection = new String("");
+    isXButtonPressed = false;
+    extension = 0; 
+    yButtonPressed = false;
+  }
+
   @Override
   public void robotPeriodic() {
     super.robotPeriodic();
-    SmartDashboard.setDefaultNumber("Horizontal Strafe Speed: ", xSpeed);
-    SmartDashboard.setDefaultNumber("Vertical Strafe Speed: ", ySpeed);
-    SmartDashboard.setDefaultNumber("Rotational Strafe Speed: ", rot);
-    SmartDashboard.setDefaultBoolean("Shooter Activation: ", isShooterActivated);
-    SmartDashboard.setDefaultBoolean("Intake Activation", intakeActivated);
-    SmartDashboard.setDefaultBoolean("Climb Activation:", isClimberActivated);
-    limelight.updateLimeLight();
+    //limelight.updateLimeLight();
+    //simpDrive.updateEncoderValues();
+    SmartDashboard.setDefaultBoolean("Y Button", yButtonPressed);
   }
   @Override
   public void autonomousInit() {
     super.autonomousInit();
     driveWithXboxControl(false);
     timer01.reset();
+    if(m_controller.getAButton()){autoSelection = "A";}
+    else if(m_controller.getBButton()){autoSelection = "B";}
+    else if(m_controller.getYButton()){autoSelection = "Y";}
+    else {autoSelection = "X";}
   }
   @Override
   public void autonomousPeriodic() {
     timer01.reset();
     timer01.start();
     driveSimplifiedXboxControl(false);
+    switch(autoSelection){
+      case("A"):
+        simpDrive.auto1();
+      case("B"):
+        simpDrive.auto2();
+      case("Y"):
+        simpDrive.auto3();
+      case("X"):
+        simpDrive.auto4();
+    }
     //m_mecanum.updateOdometry();  
   }
   @Override
@@ -134,6 +156,7 @@ public class Robot extends TimedRobot {
     //m_mecanum.killAllMotors();
     shoot.killAllMotors();
     simpDrive.killAllMotors();
+    
   }
   @Override
   public void disabledPeriodic(){
@@ -143,10 +166,17 @@ public class Robot extends TimedRobot {
   public void testInit(){
     super.testInit();
   }
+  
   @Override
   public void testPeriodic(){
     super.testPeriodic();
+    // SmartDashboard.setDefaultNumber("Test Motor Speed", testMotor.getSpeed());
+
   }
+  /**
+   * This method deals with driving for the advance mecanum drive train. As of this point, we are not using it. 
+   * @param fieldRelative
+   */
   private void driveWithXboxControl(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
@@ -165,10 +195,14 @@ public class Robot extends TimedRobot {
 
     //m_mecanum.drive(xSpeed, ySpeed, rot, fieldRelative);
   }
+  /**
+   * This method deals with driving in (GTA style of driving for the simplified mecanum drive base)
+   * @param fieldRelative
+   */
   private void driveSimplifiedXboxControl(boolean fieldRelative){
     // Get the x speed. We are inverting this because Xbox controllers return
-    // negative values when we push forward.
-    xSpeed = (m_controller.getRawAxis(3) + (-(m_controller.getRawAxis(2))) * Constants.HALF_SPEED); //Inverted to make the RT positive and the LT negative 
+    // negative values when we push forward. 
+    xSpeed = (m_controller.getRawAxis(3) + (-m_controller.getRawAxis(2))) * Constants.HALF_SPEED;
      // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
@@ -181,6 +215,9 @@ public class Robot extends TimedRobot {
     simpDrive.simplifiedDrive(fieldRelative, xSpeed, ySpeed, rot);
 
   }
+  /**
+   * This version of autonomous is dedicated to essentially making the robot into a Roomba. It will move forward until it cannot move forward anymore, check its surroundings and turn as needed.
+   */
 /*
   private void aimWithVision(NetworkTable a){
     float Kp = -0.1f;
