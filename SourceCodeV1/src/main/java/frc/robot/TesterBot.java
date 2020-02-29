@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TesterBot extends TimedRobot{
@@ -22,6 +21,7 @@ public class TesterBot extends TimedRobot{
     private VictorSP motor1;
     private Encoder encoder1;
     private XboxController xcontrol;
+    private boolean aPressed;
     @Override
     public void robotInit(){
         super.robotInit();
@@ -30,6 +30,7 @@ public class TesterBot extends TimedRobot{
         encoder1 = new Encoder(0, 1, false, EncodingType.k4X);
         setUpEncoder();
         xcontrol = new XboxController(0);
+        aPressed = false;
     }
     /**
      * Initailizes the Autonomous Program
@@ -46,6 +47,8 @@ public class TesterBot extends TimedRobot{
     public void teleopInit(){
         super.teleopInit();
         mode = "Tele Operation";
+        encoder1.reset();
+
     }
     /**
      * Initializes the Disabled Portion of the Program
@@ -67,12 +70,14 @@ public class TesterBot extends TimedRobot{
      */
     @Override
     public void robotPeriodic(){
+        
         super.robotPeriodic();
-        updateEncoder();
-        if(xcontrol.getRawButton(0))
-            runMotor();
+        SmartDashboard.putString("Mode:", mode);
+        SmartDashboard.putBoolean("A Button Pressed", aPressed);
+        SmartDashboard.putString("DB/String 1", "Test Encoder" + encoder1.getRate());
         
     }
+        
     /**
      * The constant periodic autonomous caling of the main Robot method
      */
@@ -86,6 +91,18 @@ public class TesterBot extends TimedRobot{
     @Override
     public void teleopPeriodic(){
         super.teleopPeriodic();
+        updateEncoder();
+        if(xcontrol.getRawButton(1)){
+            aPressed = true;
+            runMotor();
+        }
+        else if(xcontrol.getYButton()){
+            aPressed = false;
+            motor1.set(-.3);
+        }
+        else{aPressed = false;
+        motor1.set(0);}
+           
     }
     /**
      * Intializes the disabled portion of the program (disable all motors here)
@@ -99,14 +116,9 @@ public class TesterBot extends TimedRobot{
      * Runs a basic motor based 
      */
     public void runMotor(){
-         
-        if (xcontrol.getRawButton(0)){
-            motor1.set(1); 
-        }
-        else{
-            motor1.set(0);
-            encoder1.reset();
-        }  
+            motor1.set(.3); 
+        
+          
     }
     /**
      * Responsible for setting up the encoder 
@@ -131,7 +143,7 @@ public class TesterBot extends TimedRobot{
 
         SmartDashboard.setDefaultNumber("Count:", count);
         SmartDashboard.setDefaultNumber("Raw Count:", rawcount);
-        SmartDashboard.setDefaultNumber("Distance", distance);
+        
         SmartDashboard.setDefaultNumber("Rate", rate);
         SmartDashboard.setDefaultBoolean("Direction", direction);
         SmartDashboard.setDefaultBoolean("Stopped", stopped);
