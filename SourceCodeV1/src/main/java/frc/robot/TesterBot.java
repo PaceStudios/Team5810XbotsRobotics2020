@@ -5,6 +5,7 @@ package frc.robot;
  * @version Encoding and Linear Actuator Test
  */
 
+import edu.wpi.first.hal.PWMConfigDataResult;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -30,7 +31,9 @@ public class TesterBot extends TimedRobot{
     private boolean xPressed;
     private boolean lb;
     private boolean rb;
+    double pos;
     private Servo serv;
+    private PWMConfigDataResult res;
     @Override
     public void robotInit(){
         super.robotInit();
@@ -45,7 +48,12 @@ public class TesterBot extends TimedRobot{
         xPressed = false;
         lb = false;
         rb = false;
+        pos = 0;
         serv = new Servo(2);
+        res = serv.getRawBounds();
+        serv.setBounds(2, 1.5, 1.5, 1.5,1);
+        serv.set(0.25); //11mm
+        
     }
     /**
      * Initailizes the Autonomous Program
@@ -98,6 +106,16 @@ public class TesterBot extends TimedRobot{
         SmartDashboard.putBoolean("Encoder is Moving", encoder1.getStopped());
         SmartDashboard.putNumber("Distance XA", encoder1.getDistance());
         SmartDashboard.putNumber("Rate XA", encoder1.getRate());
+        SmartDashboard.putNumber("Servo Pos", pos);
+        SmartDashboard.putNumber("Raw Pos", serv.getPosition());
+        SmartDashboard.putNumber("Max", res.max);
+        SmartDashboard.putNumber("Min", res.min);
+        SmartDashboard.putNumber("Center", res.center);
+        SmartDashboard.putNumber("deadBandMax", res.deadbandMax);
+        SmartDashboard.putNumber("deadBandMin", res.deadbandMin);
+
+        
+
     }
         
     /**
@@ -114,30 +132,31 @@ public class TesterBot extends TimedRobot{
     public void teleopPeriodic(){
         super.teleopPeriodic();
         updateEncoder();
-        if(xcontrol.getRawButton(1)){
+        if(xcontrol.getRawButton(1)) { 
             aPressed = true;
             bPressed = false;
             xPressed = false;
             runMotor();
         }
-        else if(xcontrol.getYButton()){
+        else if(xcontrol.getYButton()){ 
             aPressed = false;
             xPressed = false;
             bPressed = false;
             motor1.set(-.3);
         }
-        else if(xcontrol.getBButton()){
-            aPressed = false;
+        else if(xcontrol.getBButton()){ //max 5.75 inches
+            aPressed = false; 
             bPressed = true;
             xPressed = false;
             encoder1.reset();
             setServoPositon(1);
         }
-        else if(xcontrol.getXButton()){
+        else if(xcontrol.getXButton()){  //min 1.75 inches
             aPressed = false;
             bPressed = false;
             xPressed = true;
-            setServoPositon(.25);
+            setServoPositon(0);
+            
         }
         else{aPressed = false;
             bPressed = false;
@@ -178,6 +197,12 @@ public class TesterBot extends TimedRobot{
     public void updateEncoder(){
     }
 
-    public void setServoPositon(double x){serv.setPosition(x);}
+    public void setServoPositon(double x){
+        pos = x;
+        while(serv.get() != pos){
+            serv.set(x);
+            pos = serv.get();
+        }
+    }
 
 }
