@@ -32,7 +32,9 @@ public class TesterBot extends TimedRobot{
     private boolean lb;
     private boolean rb;
     double pos;
+    double pos2;
     private Servo serv;
+    private Servo serv2;
     private PWMConfigDataResult res;
     @Override
     public void robotInit(){
@@ -49,10 +51,16 @@ public class TesterBot extends TimedRobot{
         lb = false;
         rb = false;
         pos = 0;
+        pos2 = 0;
         serv = new Servo(2);
+        serv2 = new Servo(3);
         res = serv.getRawBounds();
         serv.setBounds(2, 1.5, 1.5, 1.5,1);
-        serv.set(0.25); //11mm
+        serv.setSpeed(1);
+        serv.set(0); //11mm
+        serv2.setBounds(2, 1.5, 1.5, 1.5,1);
+        serv2.setSpeed(-1);
+        serv2.set(0); //11mm
         
     }
     /**
@@ -199,9 +207,16 @@ public class TesterBot extends TimedRobot{
 
     public void setServoPositon(double x){
         pos = x;
+        pos2 =x;
         while(serv.get() != pos){
             serv.set(x);
+        
             pos = serv.get();
+        }
+        while(serv2.get() != pos2){
+            serv2.set(x);
+        
+            pos2 = serv.get();
         }
     }
 
