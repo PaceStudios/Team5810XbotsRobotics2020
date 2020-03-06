@@ -78,4 +78,9 @@ public final class Constants{
     public static final String MODE_DOWN = "DOWN";
     public static final String MODE_RIGHT = "RIGHT";
     public static final String MODE_LEFT = "LEFT";
+    /**
+     * Color Values
+     */
+    
+  
 }
