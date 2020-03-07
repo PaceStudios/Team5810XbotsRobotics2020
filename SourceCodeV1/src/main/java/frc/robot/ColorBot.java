@@ -4,29 +4,19 @@ package frc.robot;
  * @author John C. Pace
  * @version Color Sensor and Color Detection Testing 
  */
-
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 /**
  * Imports Rev Robotics Information
  */
-
-
-
-
-
-
-import java.awt.*;
-
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
 public class ColorBot extends TimedRobot{
     public ColorBot(){}
-    private XboxController xcon;
-    private Joystick stick;
     private String col;
     private String mode;
     private Timer time = new Timer();
@@ -40,8 +30,6 @@ public class ColorBot extends TimedRobot{
     @Override
     public void robotInit(){
         super.robotInit();
-        xcon = new XboxController(0);
-        stick = new Joystick(1);
         mode = new String("Intialize");
         col = ""; 
         m_colorSensor = new ColorSensorV3(i2cPort);
