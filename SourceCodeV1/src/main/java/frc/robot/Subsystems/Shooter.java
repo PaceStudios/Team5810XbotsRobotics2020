@@ -19,6 +19,7 @@ public class Shooter
      * Constructor for the Shooter class
      */
     public Shooter(){
+        //  Make sure motors are connected by a Y-PWM connector, and are wired in opposite orientations to spit in the same direction.
          shooterMotors = new Spark(Constants.SHOOTERMOTERS_PWM);
          beltDriveMotor =new Victor(Constants.BELTDRIVEMOTOR_PWM);
          
